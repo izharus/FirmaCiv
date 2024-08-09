@@ -2,6 +2,7 @@ package com.alekiponi.firmaciv.common.entity.vehicle;
 
 import com.alekiponi.alekiships.common.entity.vehicle.AbstractAlekiBoatEntity;
 import com.alekiponi.alekiships.common.entity.vehiclecapability.IAllowFallDamage;
+import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.AbstractCompartmentEntity;
 import com.alekiponi.firmaciv.Firmaciv;
 import com.alekiponi.firmaciv.common.item.FirmacivItems;
 import com.alekiponi.firmaciv.util.KayakMaterial;
@@ -92,6 +93,21 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
         }
 
         return true;
+    }
+
+    @Override
+    public AbstractCompartmentEntity.RidingPose[] getRidingPoses() {
+        if (ridingPoses.length == 0)
+        {
+            AbstractCompartmentEntity.RidingPose[] poses = new AbstractCompartmentEntity.RidingPose[this.getMaxPassengers()];
+            for (int i = 1; i < this.getMaxPassengers(); i++)
+            {
+                poses[i] = AbstractCompartmentEntity.RidingPose.COMPACT;
+            }
+            poses[0] = AbstractCompartmentEntity.RidingPose.STANDARD;
+            this.ridingPoses = poses;
+        }
+        return ridingPoses;
     }
 
     @Override

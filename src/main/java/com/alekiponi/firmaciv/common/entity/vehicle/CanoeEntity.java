@@ -4,6 +4,7 @@ import com.alekiponi.alekiships.common.entity.vehicle.AbstractAlekiBoatEntity;
 import com.alekiponi.alekiships.common.entity.vehiclecapability.IAllowFallDamage;
 import com.alekiponi.alekiships.common.entity.vehiclecapability.IHaveCleats;
 import com.alekiponi.alekiships.common.entity.vehiclecapability.IHaveColliders;
+import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.AbstractCompartmentEntity;
 import com.alekiponi.alekiships.util.BoatMaterial;
 import com.alekiponi.firmaciv.common.item.FirmacivItems;
 import net.minecraft.nbt.CompoundTag;
@@ -52,6 +53,21 @@ public class CanoeEntity extends AbstractAlekiBoatEntity implements IHaveCleats,
             return InteractionResult.SUCCESS;
         }
         return super.interact(player, hand);
+    }
+
+    @Override
+    public AbstractCompartmentEntity.RidingPose[] getRidingPoses() {
+        if (ridingPoses.length == 0)
+        {
+            AbstractCompartmentEntity.RidingPose[] poses = new AbstractCompartmentEntity.RidingPose[this.getMaxPassengers()];
+            for (int i = 1; i < this.getMaxPassengers(); i++)
+            {
+                poses[i] = AbstractCompartmentEntity.RidingPose.COMPACT;
+            }
+            poses[0] = AbstractCompartmentEntity.RidingPose.STANDARD;
+            this.ridingPoses = poses;
+        }
+        return ridingPoses;
     }
 
     @Override
