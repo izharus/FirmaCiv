@@ -97,14 +97,10 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
 
     @Override
     public AbstractCompartmentEntity.RidingPose[] getRidingPoses() {
-        if (ridingPoses.length == 0)
+        if (ridingPoses.length == 0 || ridingPoses[0] == null)
         {
             AbstractCompartmentEntity.RidingPose[] poses = new AbstractCompartmentEntity.RidingPose[this.getMaxPassengers()];
-            for (int i = 1; i < this.getMaxPassengers(); i++)
-            {
-                poses[i] = AbstractCompartmentEntity.RidingPose.COMPACT;
-            }
-            poses[0] = AbstractCompartmentEntity.RidingPose.STANDARD;
+            poses[0] = AbstractCompartmentEntity.RidingPose.ULTRA_COMPACT;
             this.ridingPoses = poses;
         }
         return ridingPoses;
