@@ -383,9 +383,8 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
                         nbtTagList.add(itemTag);
                     }
                 }
-                final CompoundTag itemStacks = new CompoundTag();
-                itemStacks.put("Items", nbtTagList);
-                compoundTag.put("inventory", itemStacks);
+                compoundTag.put("Items", nbtTagList);
+                compoundTag.putInt("Size", this.vesselCompartment.getContainerSize());
             }
             return compoundTag;
         }
@@ -393,7 +392,7 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
         @Override
         public void deserializeNBT(final CompoundTag compoundTag) {
             { // Deserialize our container wrapper slots
-                final ListTag tagList = compoundTag.getCompound("inventory").getList("Items", Tag.TAG_COMPOUND);
+                final ListTag tagList = compoundTag.getList("Items", Tag.TAG_COMPOUND);
                 for (int i = 0; i < tagList.size(); i++) {
                     final CompoundTag itemTags = tagList.getCompound(i);
                     final int slotIndex = itemTags.getInt("Slot");
