@@ -51,7 +51,7 @@ public final class BlockEventHandler {
 
         if (event.getToolAction() == ToolActions.AXE_STRIP && (event.getState()
                 .is(FirmacivTags.Blocks.CAN_MAKE_CANOE) || (!FirmacivConfig.SERVER.canoeWoodRestriction.get() && event.getState()
-                .is(FirmacivTags.Blocks.CAN_MAKE_CANOE_UNRESTRICTED))) &&
+                .is(FirmacivTags.Blocks.CAN_MAKE_CANOE_UNRESTRICTED))) && event.getPlayer() != null &&
                 event.getPlayer().getItemInHand(event.getPlayer().getUsedItemHand()).is(FirmacivTags.Items.SAWS)) {
             if (event.getState().getValue(BlockStateProperties.AXIS).isHorizontal()) {
                 convertLogToCanoeComponent(event);
@@ -78,7 +78,7 @@ public final class BlockEventHandler {
 
         int nextCanoeCarvedState = event.getState().getValue(CANOE_CARVED) + 1;
 
-        if (canoeComponentBlockState.getValue(CANOE_CARVED) < 5 &&
+        if (canoeComponentBlockState.getValue(CANOE_CARVED) < 5 && event.getPlayer() != null &&
                 event.getPlayer().getItemInHand(event.getPlayer().getUsedItemHand()).is(FirmacivTags.Items.SAWS)) {
             event.getPlayer().swing(event.getPlayer().getUsedItemHand());
             world.setBlock(thisBlockPos, event.getState().setValue(CANOE_CARVED, nextCanoeCarvedState), 2);
@@ -93,7 +93,7 @@ public final class BlockEventHandler {
             }
 
         } else if (canoeComponentBlockState.getValue(CANOE_CARVED) >= 5 && canoeComponentBlockState.getValue(
-                CANOE_CARVED) < 11 &&
+                CANOE_CARVED) < 11 && event.getPlayer() != null &&
                 event.getPlayer().getItemInHand(event.getPlayer().getUsedItemHand()).is(FirmacivTags.Items.AXES)) {
             event.getPlayer().swing(event.getPlayer().getUsedItemHand());
             BlockPos blockPos1 = thisBlockPos.relative(axis, -2);
