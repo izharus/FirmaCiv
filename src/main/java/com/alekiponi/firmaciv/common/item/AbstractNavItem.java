@@ -1,9 +1,13 @@
 package com.alekiponi.firmaciv.common.item;
 
+import com.alekiponi.firmaciv.events.config.FirmacivConfig;
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -14,28 +18,43 @@ import net.minecraft.world.phys.Vec3;
 
 import java.text.DecimalFormat;
 
-public class AbstractNavItem extends Item {
+public abstract class AbstractNavItem extends Item {
+
+    private static final float RANDOM_LAT_LON_SCALE = 0.1f;
+    private static final int RANDOM_ALT_SCALE = 4;
+
+    private static double temperatureScale = 20000;
+    private static double rainfallScale = 20000;
+
     public AbstractNavItem(Properties pProperties) {
         super(pProperties);
     }
 
+    public static void updateScales(ServerLevel level){
+        if (!FirmacivConfig.SERVER.changeLatitudeLongitudeBasedOnClimateConfig.get()) {
+            temperatureScale = 20000;
+            rainfallScale = 20000;
+            return;
+        }
+        final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) level.getChunkSource().getGenerator();
+        temperatureScale = extension.settings().temperatureScale();
+        rainfallScale = extension.settings().rainfallScale();
+    }
+
     public static double[] getNavLocation(Vec3 position) {
-        double latitude = (Math.floor(position.get(Direction.Axis.Z) - 10000) / 20000) * 90;
-        double longitude = (Math.floor(position.get(Direction.Axis.X)) / 10000) * 90;
+        double latitude = (Math.floor(position.get(Direction.Axis.Z) - (double) temperatureScale / 2) / temperatureScale) * 90;
+        double longitude = (Math.floor(position.get(Direction.Axis.X)) / ((double) rainfallScale / 2)) * 90;
         double altitude = (position.get(Direction.Axis.Y)) - 64;
 
         return new double[]{latitude, longitude, altitude};
     }
 
-    public static String[] getNavStrings(Vec3 position) {
-        double randomScale = 0.1;
-        int altRandomScale = 4;
-
+    public static String[] createNavStrings(Vec3 position) {
         double[] navLocation = getNavLocation(position);
 
-        double latitude = navLocation[NavSelection.LATITUDE.ordinal()] + Math.random() * randomScale;
-        double longitude = navLocation[NavSelection.LONGITUDE.ordinal()] + Math.random() * randomScale;
-        double altitude = navLocation[NavSelection.ALTITUDE.ordinal()] + Math.random() * altRandomScale;
+        double latitude = navLocation[NavSelection.LATITUDE.ordinal()] + Math.random() * RANDOM_LAT_LON_SCALE;
+        double longitude = navLocation[NavSelection.LONGITUDE.ordinal()] + Math.random() * RANDOM_LAT_LON_SCALE;
+        double altitude = navLocation[NavSelection.ALTITUDE.ordinal()] + Math.random() * RANDOM_ALT_SCALE;
 
         Component latitudeComponent = Component.translatable("latitude");
 
@@ -65,13 +84,13 @@ public class AbstractNavItem extends Item {
         DecimalFormat df = new DecimalFormat("###.##");
 
         String latStr = latitudeComponent.getString() + ": " + df.format(Math.abs(latitude))
-                + " " + degreesComponent.getString() +" " + (latitude > 0 ? southComponent.getString() : northComponent.getString());
+                + " " + degreesComponent.getString() + " " + (latitude > 0 ? southComponent.getString() : northComponent.getString());
 
         String lonStr = longitudeComponent.getString() + ": " + df.format(
                 Math.abs(longitude)) + " " + degreesComponent.getString() + " " + (longitude > 0 ? eastComponent.getString() : westComponent.getString());
 
         String altStr = altitudeComponent.getString() + ": " + dfAlt.format(
-                Math.abs(altitude)) + " " + meters.getString()+ " " + (altitude > 0 ? above.getString() : below.getString()) + " " + seaLevelComponent.getString();
+                Math.abs(altitude)) + " " + meters.getString() + " " + (altitude > 0 ? above.getString() : below.getString()) + " " + seaLevelComponent.getString();
 
         String latSim = latitudeComponent.getString(3) + ": " + df.format(Math.abs(latitude)) + " " + (latitude > 0 ? southComponent.getString(1) : northComponent.getString(1));
         String lonSim = longitudeComponent.getString(3) + ": " + df.format(Math.abs(longitude)) + " " + (longitude > 0 ? eastComponent.getString(1) : westComponent.getString(1));
@@ -82,7 +101,7 @@ public class AbstractNavItem extends Item {
     }
 
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand,
-            NavType navType) {
+                                                  NavType navType) {
 
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
 
@@ -97,30 +116,30 @@ public class AbstractNavItem extends Item {
         return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide());
     }
 
-    public void outputCoordinate(Vec3 position, Player player, NavType navType) {
-
-        String[] navStrings = getNavStrings(position);
+    public static int outputCoordinate(Vec3 position, Player player, NavType navType) {
+        String[] navStrings = createNavStrings(position);
 
         String locationText = navStrings[NavSelection.LATITUDE.ordinal()];
         String simpleLocationText = navStrings[NavSelection.LAT_SIMPLE.ordinal()];
         Component copyMessage = Component.translatable("copy_latitude");
 
-
         switch (navType) {
-            case LAT:
-                break;
-            case LON:
+            case LAT -> {
+                locationText = navStrings[NavSelection.LATITUDE.ordinal()];
+                simpleLocationText = navStrings[NavSelection.LAT_SIMPLE.ordinal()];
+                copyMessage = Component.translatable("copy_latitude");
+            }
+            case LON -> {
                 locationText = navStrings[NavSelection.LONGITUDE.ordinal()];
                 simpleLocationText = navStrings[NavSelection.LON_SIMPLE.ordinal()];
                 copyMessage = Component.translatable("copy_longitude");
-
-                break;
-            case ALT:
+            }
+            case ALT -> {
                 locationText = navStrings[NavSelection.ALTITUDE.ordinal()];
                 simpleLocationText = navStrings[NavSelection.ALT_SIMPLE.ordinal()];
                 copyMessage = Component.translatable("copy_altitude");
-                break;
-            case LAT_LON:
+            }
+            case LAT_LON -> {
                 locationText =
                         navStrings[AbstractNavItem.NavSelection.LATITUDE.ordinal()] + " | " +
                                 navStrings[AbstractNavItem.NavSelection.LONGITUDE.ordinal()];
@@ -128,7 +147,22 @@ public class AbstractNavItem extends Item {
                 simpleLocationText =
                         navStrings[AbstractNavItem.NavSelection.LAT_SIMPLE.ordinal()] + ", " +
                                 navStrings[AbstractNavItem.NavSelection.LON_SIMPLE.ordinal()];
-                break;
+
+                copyMessage = Component.translatable("copy_latlon");
+            }
+            case LAT_LON_ALT -> {
+                locationText =
+                        navStrings[AbstractNavItem.NavSelection.LATITUDE.ordinal()] + " | " +
+                                navStrings[AbstractNavItem.NavSelection.LONGITUDE.ordinal()] + " | " +
+                                navStrings[NavSelection.ALTITUDE.ordinal()];
+
+                simpleLocationText =
+                        navStrings[AbstractNavItem.NavSelection.LAT_SIMPLE.ordinal()] + ", " +
+                                navStrings[AbstractNavItem.NavSelection.LON_SIMPLE.ordinal()] + ", " +
+                                navStrings[AbstractNavItem.NavSelection.ALT_SIMPLE.ordinal()];
+
+                copyMessage = Component.translatable("copy_latlonalt");
+            }
         }
 
         String finalSimpleLocationText = simpleLocationText;
@@ -143,7 +177,7 @@ public class AbstractNavItem extends Item {
 
         player.sendSystemMessage(locationMessage);
 
-
+        return 0;
     }
 
     public enum NavSelection {
@@ -159,7 +193,8 @@ public class AbstractNavItem extends Item {
         LAT,
         LON,
         ALT,
-        LAT_LON
+        LAT_LON,
+        LAT_LON_ALT
     }
 
 }

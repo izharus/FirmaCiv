@@ -57,7 +57,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'examplemod'
+            property 'forge.enabledGameTestNamespaces', 'firmaciv'
 
             arg "-mixin.config=firmaciv.mixins.json"
 
@@ -78,7 +78,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'examplemod'
+            property 'forge.enabledGameTestNamespaces', 'firmaciv'
 
             arg "-mixin.config=firmaciv.mixins.json"
 

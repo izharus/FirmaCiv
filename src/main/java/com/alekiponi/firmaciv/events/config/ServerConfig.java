@@ -11,6 +11,8 @@ public class ServerConfig {
     public final ForgeConfigSpec.BooleanValue forceReducedDebugInfo;
     public final ForgeConfigSpec.BooleanValue disableVanillaBoatFunctionality;
 
+    public final ForgeConfigSpec.BooleanValue changeLatitudeLongitudeBasedOnClimateConfig;
+
     ServerConfig(ForgeConfigSpec.Builder innerBuilder) {
         Function<String, ForgeConfigSpec.Builder> builder = (name) -> {
             return innerBuilder.translation("firmaciv.config.server." + name);
@@ -32,6 +34,10 @@ public class ServerConfig {
         this.disableVanillaBoatFunctionality = builder.apply("disableVanillaBoatFunctionality")
                 .comment("Disables vanilla boats and base TFC boats from working.")
                 .define("disableVanillaBoatFunctionality", true);
+
+        this.changeLatitudeLongitudeBasedOnClimateConfig = builder.apply("changeLatitudeLongitudeBasedOnClimateConfig")
+            .comment("Automatically adjusts latitude and longitude to match the climate scale of the TFC world.")
+            .define("changeLatitudeLongitudeBasedOnClimateConfig", true);
 
     }
 }

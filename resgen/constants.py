@@ -221,6 +221,7 @@ DEFAULT_LANG = {
     "copy_latitude": "Copy Latitude to Clipboard",
     "copy_longitude": "Copy Longitude to Clipboard",
     "copy_latlon": "Copy Latitude and Longitude to Clipboard",
+    "copy_latlonalt": "Copy Latitude, Longitude, and Altitude to Clipboard",
     "copy_altitude": "Copy Altitude to Clipboard",
 
     "latitude": "Latitude",

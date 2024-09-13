@@ -122,41 +122,41 @@ public final class FirmacivClientEvents {
                         private double rota;
                         private long lastUpdateTick;
 
-                        public float unclampedCall(ItemStack p_174665_, @Nullable ClientLevel p_174666_,
+                        public float unclampedCall(ItemStack stack, @Nullable ClientLevel clientLevel,
                                 @Nullable LivingEntity livingEntity, int p_174668_) {
-                            net.minecraft.world.entity.Entity entity = livingEntity != null ? livingEntity : p_174665_.getEntityRepresentation();
+                            net.minecraft.world.entity.Entity entity = livingEntity != null ? livingEntity : stack.getEntityRepresentation();
                             if (entity == null) {
                                 return 0.0F;
                             } else {
-                                if (p_174666_ == null && entity.level() instanceof ClientLevel) {
-                                    p_174666_ = (ClientLevel) entity.level();
+                                if (clientLevel == null && entity.level() instanceof ClientLevel) {
+                                    clientLevel = (ClientLevel) entity.level();
                                 }
 
                                 double longitude = Math.abs((AbstractNavItem.getNavLocation(
                                         entity.getEyePosition())[AbstractNavItem.NavSelection.LONGITUDE.ordinal()] % 180) / 180);
 
-                                if (p_174666_ == null) {
+                                if (clientLevel == null) {
                                     return 0.0F;
                                 } else {
                                     double time;
-                                    if (p_174666_.dimensionType().natural()) {
-                                        time = p_174666_.getTimeOfDay(1.0F);
+                                    if (clientLevel.dimensionType().natural()) {
+                                        time = clientLevel.getTimeOfDay(1.0F);
                                         time += longitude;
                                         time %= 1.0F;
                                     } else {
                                         time = Math.random();
                                     }
 
-                                    time = this.wobble(p_174666_, time);
+                                    time = this.wobble(clientLevel, time);
                                     return (float) time;
                                 }
                             }
                         }
 
 
-                        private double wobble(Level p_117904_, double p_117905_) {
-                            if (p_117904_.getGameTime() != this.lastUpdateTick) {
-                                this.lastUpdateTick = p_117904_.getGameTime();
+                        private double wobble(Level level, double p_117905_) {
+                            if (level.getGameTime() != this.lastUpdateTick) {
+                                this.lastUpdateTick = level.getGameTime();
                                 double d0 = p_117905_ - this.rotation;
                                 d0 = Mth.positiveModulo(d0 + 0.5D, 1.0D) - 0.5D;
                                 this.rota += d0 * 0.1D;
