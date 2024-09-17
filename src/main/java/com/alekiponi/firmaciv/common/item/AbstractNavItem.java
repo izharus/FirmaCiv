@@ -1,5 +1,6 @@
 package com.alekiponi.firmaciv.common.item;
 
+import com.alekiponi.firmaciv.Firmaciv;
 import com.alekiponi.firmaciv.events.config.FirmacivConfig;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
@@ -36,9 +37,16 @@ public abstract class AbstractNavItem extends Item {
             rainfallScale = 20000;
             return;
         }
-        final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) level.getChunkSource().getGenerator();
-        temperatureScale = extension.settings().temperatureScale();
-        rainfallScale = extension.settings().rainfallScale();
+        try {
+            final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) level.getChunkSource().getGenerator();
+            temperatureScale = extension.settings().temperatureScale();
+            rainfallScale = extension.settings().rainfallScale();
+        } catch (Exception e){
+            Firmaciv.LOGGER.warn("Did not successfully find temperature or rainfall scale, using defaults for nav tool coordinates.");
+            temperatureScale = 20000;
+            rainfallScale = 20000;
+            return;
+        }
     }
 
     public static double[] getNavLocation(Vec3 position) {

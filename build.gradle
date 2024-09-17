@@ -188,9 +188,6 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-$minecraftVersion-common-api:$jeiVersion")
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraftVersion-forge:$jeiVersion")
 
-    // Easy handheld models TODO (maybe we JIJ this?)
-    //runtimeOnly fg.deobf("curse.maven:alekis-easy-held-models-953157:4977248")
-
     // AlekiShips
     implementation fg.deobf("curse.maven:alekiships-1068445:5636214")
     /*implementation(jarJar(fg.deobf("com.alekiponi:alekiNiftyShips-FORGE-$minecraftVersion:$alekiShipsVersion"))) {
