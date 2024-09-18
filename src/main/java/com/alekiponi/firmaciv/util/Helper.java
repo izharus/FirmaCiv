@@ -1,5 +1,6 @@
 package com.alekiponi.firmaciv.util;
 
+import com.alekiponi.firmaciv.events.config.FirmacivConfig;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,6 +16,10 @@ public class Helper {
     public static Optional<FluidState> canalSourceCreation(FlowingFluid self, Level pLevel, BlockPos pPos, BlockState pBlockState){
 
         // TODO check to see if there's a large enough volume to spread horizontally?
+
+        if (!FirmacivConfig.SERVER.enableParallelSourceCreationAtSeaLevel.get()){
+            return Optional.empty();
+        }
 
         boolean flag = false;
         Direction from = null;

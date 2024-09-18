@@ -12,6 +12,7 @@ public class ServerConfig {
     public final ForgeConfigSpec.BooleanValue disableVanillaBoatFunctionality;
 
     public final ForgeConfigSpec.BooleanValue changeLatitudeLongitudeBasedOnClimateConfig;
+    public final ForgeConfigSpec.BooleanValue enableParallelSourceCreationAtSeaLevel;
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder) {
         Function<String, ForgeConfigSpec.Builder> builder = (name) -> {
@@ -38,6 +39,10 @@ public class ServerConfig {
         this.changeLatitudeLongitudeBasedOnClimateConfig = builder.apply("changeLatitudeLongitudeBasedOnClimateConfig")
             .comment("Automatically adjusts latitude and longitude to match the climate scale of the TFC world.")
             .define("changeLatitudeLongitudeBasedOnClimateConfig", true);
+
+        this.enableParallelSourceCreationAtSeaLevel = builder.apply("enableParallelSourceCreationAtSeaLevel")
+                .comment("Expands water source creation to make canal building possible at sea level.")
+                .define("enableParallelSourceCreationAtSeaLevel", true);
 
     }
 }
