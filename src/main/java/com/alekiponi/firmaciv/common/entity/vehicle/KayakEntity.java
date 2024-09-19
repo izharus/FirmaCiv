@@ -5,8 +5,10 @@ import com.alekiponi.alekiships.common.entity.vehiclecapability.IAllowFallDamage
 import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.AbstractCompartmentEntity;
 import com.alekiponi.firmaciv.Firmaciv;
 import com.alekiponi.firmaciv.common.item.FirmacivItems;
+import com.alekiponi.firmaciv.util.Helper;
 import com.alekiponi.firmaciv.util.KayakMaterial;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,8 +21,11 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+
+import static net.minecraftforge.items.ItemHandlerHelper.giveItemToPlayer;
 
 public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDamage {
     public final int PASSENGER_NUMBER = 1;
@@ -28,6 +33,7 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
     protected final float DAMAGE_RECOVERY = 1.0f;
     public final int[] COMPARTMENTS = {0};
     protected final float PASSENGER_SIZE_LIMIT = 0.6F;
+    protected final float HUNGER_FACTOR = 0.02F;
 
     public KayakEntity(final EntityType<? extends AbstractAlekiBoatEntity> entityType, final Level level) {
         super(entityType, level, KayakMaterial.KAYAK);
@@ -64,6 +70,9 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
         if (this.getDamage() > 0.0F) {
             this.setDamage(this.getDamage() - getDamageRecovery());
         }
+
+        Helper.causeExhaustionWhilePaddlingRowing(this, HUNGER_FACTOR);
+
         super.tick();
     }
 
@@ -87,7 +96,11 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
 
         if (instantKill || this.getDamage() > getDamageThreshold()) {
             if (!instantKill && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
-                this.spawnAtLocation(this.getDropItem());
+                if (damageSource.getEntity() instanceof Player player) {
+                    giveItemToPlayer(player, this.getDropItem().getDefaultInstance());
+                } else {
+                    this.spawnAtLocation(this.getDropItem());
+                }
             }
             this.discard();
         }
@@ -97,8 +110,7 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
 
     @Override
     public AbstractCompartmentEntity.RidingPose[] getRidingPoses() {
-        if (ridingPoses.length == 0 || ridingPoses[0] == null)
-        {
+        if (ridingPoses.length == 0 || ridingPoses[0] == null) {
             AbstractCompartmentEntity.RidingPose[] poses = new AbstractCompartmentEntity.RidingPose[this.getMaxPassengers()];
             poses[0] = AbstractCompartmentEntity.RidingPose.ULTRA_COMPACT;
             this.ridingPoses = poses;
@@ -126,7 +138,7 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
         return 0;
     }
 
-    protected Vec3 positionRiderByIndex(int index){
+    protected Vec3 positionRiderByIndex(int index) {
         float localX = 0.0F;
         float localZ = 0.0F;
         float localY = (float) ((this.isRemoved() ? (double) 0.01F : this.getPassengersRidingOffset()));
@@ -146,7 +158,7 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
     @Override
     protected float getPaddleMultiplier() {
         float paddleMultiplier = 1.0f;
-        if(this.getControllingPassenger() instanceof Player player){
+        if (this.getControllingPassenger() instanceof Player player) {
             if (player.isHolding(FirmacivItems.KAYAK_PADDLE.get())) {
                 paddleMultiplier = 2.0f;
             }
@@ -170,7 +182,7 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
     }
 
     @Override
-    public float getStepHeight(){
+    public float getStepHeight() {
         return 0.6f;
     }
 }

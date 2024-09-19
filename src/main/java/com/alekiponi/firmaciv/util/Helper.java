@@ -1,9 +1,12 @@
 package com.alekiponi.firmaciv.util;
 
+import com.alekiponi.alekiships.common.entity.vehicle.AbstractAlekiBoatEntity;
+import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.EmptyCompartmentEntity;
 import com.alekiponi.firmaciv.events.config.FirmacivConfig;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -93,5 +96,30 @@ public class Helper {
             }
         }
         return Optional.empty();
+    }
+
+    public static boolean hasAnyInput(EmptyCompartmentEntity compartment){
+        return compartment.getInputDown() || compartment.getInputLeft() || compartment.getInputRight() || compartment.getInputUp();
+    }
+
+    public static void causeExhaustionWhilePaddlingRowing(AbstractAlekiBoatEntity thisBoat, float factor){
+        // TODO only causes hunger for the pilot; should also cause hunger for other paddling passengers
+        if (thisBoat.getControllingPassenger() instanceof Player player
+                && thisBoat.getDeltaMovement().multiply(1,0,1).length() > 0){
+            if (thisBoat.getPilotCompartment() != null && Helper.hasAnyInput(thisBoat.getPilotCompartment())){
+                float k = Math.round(thisBoat.getDeltaMovement().multiply(1,0,1).length() * 100.0F);
+                if (k > 0) {
+                    player.causeFoodExhaustion(factor * k * 0.01F);
+                }
+            }
+        }
+    }
+
+    public static void causeExhaustionWhileSailing(AbstractAlekiBoatEntity thisBoat, float factor){
+        if (thisBoat.getControllingPassenger() instanceof Player player){
+            if (thisBoat.getPilotCompartment() != null && Helper.hasAnyInput(thisBoat.getPilotCompartment())){
+                player.causeFoodExhaustion(factor * 25 * 0.01F);
+            }
+        }
     }
 }

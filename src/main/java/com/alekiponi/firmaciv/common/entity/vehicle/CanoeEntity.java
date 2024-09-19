@@ -7,6 +7,7 @@ import com.alekiponi.alekiships.common.entity.vehiclecapability.IHaveColliders;
 import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.AbstractCompartmentEntity;
 import com.alekiponi.alekiships.util.BoatMaterial;
 import com.alekiponi.firmaciv.common.item.FirmacivItems;
+import com.alekiponi.firmaciv.util.Helper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -34,11 +35,21 @@ public class CanoeEntity extends AbstractAlekiBoatEntity implements IHaveCleats,
     protected final float DAMAGE_RECOVERY = 2.0f;
     protected final float PASSENGER_SIZE_LIMIT = 0.9F;
 
+    protected final float HUNGER_FACTOR = 0.02F;
+
     public final int[] COLLIDERS = {3, 4};
 
     public CanoeEntity(final EntityType<? extends CanoeEntity> entityType, final Level level,
                        final BoatMaterial boatMaterial) {
         super(entityType, level, boatMaterial);
+
+
+    }
+
+    @Override
+    public void tick(){
+        super.tick();
+        Helper.causeExhaustionWhilePaddlingRowing(this, HUNGER_FACTOR);
     }
 
     @Override

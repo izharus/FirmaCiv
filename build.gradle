@@ -189,7 +189,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraftVersion-forge:$jeiVersion")
 
     // AlekiShips
-    implementation fg.deobf("curse.maven:alekiships-1068445:5636214")
+    implementation fg.deobf("curse.maven:alekiships-1068445:5669604")
     /*implementation(jarJar(fg.deobf("com.alekiponi:alekiNiftyShips-FORGE-$minecraftVersion:$alekiShipsVersion"))) {
         jarJar.ranged(it as Dependency, "[$alekiShipsVersion,)")
     }*/
