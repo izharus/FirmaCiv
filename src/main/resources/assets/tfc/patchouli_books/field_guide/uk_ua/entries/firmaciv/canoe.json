@@ -1,0 +1,97 @@
+
+{
+  "name": "Каное",
+  "category": "tfc:firmaciv",
+  "icon": "firmaciv:canoe_with_paddle_icon_only",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Каное, ймовірно, стане першим кроком у вашій водній подорожі! Якщо ви перебуваєте в мідному віці, ви, ймовірно, зможете побудувати каное."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "firmaciv:textures/gui/book/canoe_isometric.png"
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Ви можете поставити блоки або тварин на сидіння пілота, але майте на увазі, що ви не зможете веслувати на човні, якщо ви це зробите! Це найбільш корисно, якщо ви просто хочете відправити матеріали вниз по річці самостійно.$(br2)Каное має два сидіння, і керується ззаду. Вам потрібно тримати Весло для каное, щоб рухатися на повній швидкості, а якщо два гравці тримають весла, ви можете рухатися ще швидше."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Щоб побудувати каное, помістіть 3 тесані колоди в ряд, горизонтально, і зрізати верхівки пилкою. Потім, вирізати форму каное сокирою. Накінець, запаліть внутрішню частину каное, щоб завершити корпус. Щоб завершити процес, знадобиться стільки ж часу, скільки і в ямній печі."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Щоб вирізати каное, потрібна більш м’яка деревина, і в результаті лише деякі колоди є працездатними:$(br2)Дуґлас$(br)Сосна$(br)Пальма$(br)Смерека$(br)Секвоя$(br)Бавовняне дерево$(br)Мангра$(br)Білий кедр$(br)Верба"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            " F ",
+            " 0 ",
+            " B "
+          ]
+        ],
+        "mapping": {
+          "F": "tfc:wood/stripped_log/douglas_fir[axis=x]",
+          "0": "tfc:wood/stripped_log/douglas_fir[axis=x]",
+          "B": "tfc:wood/stripped_log/douglas_fir[axis=x]"
+        }
+      },
+      "name": "Просто колода",
+      "text": "Перший крок щоб зробити каное.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            " F ",
+            " 0 ",
+            " B "
+          ]
+        ],
+        "mapping": {
+          "F": "firmaciv:wood/canoe_component_block/douglas_fir[canoe_carved=5,facing=east,end=true]",
+          "0": "firmaciv:wood/canoe_component_block/douglas_fir[canoe_carved=5,facing=east,end=false]",
+          "B": "firmaciv:wood/canoe_component_block/douglas_fir[canoe_carved=5,facing=east,end=true]"
+        }
+      },
+      "name": "Дивні плити",
+      "text": "Верхня частина колод була вирізана за допомогою пилки.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            " F ",
+            " 0 ",
+            " B "
+          ]
+        ],
+        "mapping": {
+          "F": "firmaciv:wood/canoe_component_block/douglas_fir[canoe_carved=11,facing=west,end=true]",
+          "0": "firmaciv:wood/canoe_component_block/douglas_fir[canoe_carved=11,facing=east,end=false]",
+          "B": "firmaciv:wood/canoe_component_block/douglas_fir[canoe_carved=11,facing=east,end=true]"
+        }
+      },
+      "name": "Дивна скульптура",
+      "text": "Повністю різьблене каное, готове до випалювання корпусу.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "firmaciv:crafting/canoe_paddle",
+      "text": "Не забудьте створити Весло для каное, або два!"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1
+}

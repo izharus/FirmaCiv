@@ -1,0 +1,218 @@
+{
+  "name": "Шлюпки",
+  "category": "tfc:firmaciv",
+  "icon": "firmaciv:sloop_icon_only",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Сталевий вік? Гадаю, вам давно пора побудувати собі справжній корабель. Шлюп має 4 блоки завширшки та понад 8 блоків завдовжки, що є вражаючим покращенням веслового човна! Він вміщує до 13 відсіків і до 7 пасажирів, та його швидкість залежить від вітру. Він також може нести 6 гармат!"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "firmaciv:textures/gui/book/sloop_isometric.png"
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Проте шлюп дорогий, вимагає багато сталі, міді, вовни та інших матеріалів. Але матеріали — це не єдина вартість! Вам також доведеться навчитись плавати, і для цього може знадобитись певна практика! Вам також, ймовірно, знадобиться побудувати причали та іншу інфраструктуру, якщо плануєте підходити до берега на своєму кораблі."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Ось перелік матеріалів для будівництва шлюпа:$(br2)12 Злитків сталі$(br)24 Злитків міді$(br)648 Дощок$(br)34 Колод$(br)24 Вовняної тканини$(br)6 Ниток$(br)72 Джутових волокон"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Риштування",
+      "recipe": "firmaciv:crafting/watercraft_frame_flat",
+      "text": "Подібно до веслового човна, ви почнете з корабельних риштувань. Однак вам також знадобиться новий, плаский варіант для великих кораблів."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     "
+          ],
+          [
+            "  12 ",
+            "  34 ",
+            " 1562",
+            " 30a4",
+            " 3aa4",
+            " 3aa4",
+            " 7889"
+          ]
+        ],
+        "mapping": {
+          "1": "firmaciv:watercraft_frame_angled[facing=west,shape=inner_right]",
+          "2": "firmaciv:watercraft_frame_angled[facing=west,shape=inner_left]",
+          "3": "firmaciv:watercraft_frame_angled[facing=north,shape=straight]",
+          "4": "firmaciv:watercraft_frame_angled[facing=south,shape=straight]",
+          "5": "firmaciv:watercraft_frame_angled[facing=west,shape=outer_right]",
+          "6": "firmaciv:watercraft_frame_angled[facing=west,shape=outer_left]",
+          "7": "firmaciv:watercraft_frame_angled[facing=east,shape=inner_left]",
+          "8": "firmaciv:watercraft_frame_angled[facing=east,shape=straight]",
+          "9": "firmaciv:watercraft_frame_angled[facing=east,shape=inner_right]",
+          "0": "firmaciv:watercraft_frame_flat",
+          "a": "firmaciv:watercraft_frame_flat"
+        }
+      },
+      "name": "Риштування шлюпки",
+      "text": "Корабельні риштування, розміщені для побудови корпусу шлюпа.",
+      "enable_visualize": true
+    },
+
+    {
+      "type": "patchouli:text",
+      "text": "Далі вам потрібно буде додати дошки з відповідної деревини міцних порід:$(br2)Акація$(br)Ясену$(br)Осики$(br)Берези$(br)Гренаділу$(br)Каштану$(br)Горіху$(br)Клену$(br)Дубу$(br)Палісандру$(br)Сикамору"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     "
+          ],
+          [
+            "  12 ",
+            "  34 ",
+            " 1562",
+            " 30a4",
+            " 3aa4",
+            " 3aa4",
+            " 7889"
+          ]
+        ],
+        "mapping": {
+          "1": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=inner_right,frame_processed=3]",
+          "2": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=inner_left,frame_processed=3]",
+          "3": "firmaciv:wood/watercraft_frame/angled/oak[facing=north,shape=straight,frame_processed=3]",
+          "4": "firmaciv:wood/watercraft_frame/angled/oak[facing=south,shape=straight,frame_processed=3]",
+          "5": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=outer_right,frame_processed=3]",
+          "6": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=outer_left,frame_processed=3]",
+          "7": "firmaciv:wood/watercraft_frame/angled/oak[facing=east,shape=inner_left,frame_processed=3]",
+          "8": "firmaciv:wood/watercraft_frame/angled/oak[facing=east,shape=straight,frame_processed=3]",
+          "9": "firmaciv:wood/watercraft_frame/angled/oak[facing=east,shape=inner_right,frame_processed=3]",
+          "0": "firmaciv:wood/watercraft_frame/flat/oak[frame_processed=3]",
+          "a": "firmaciv:wood/watercraft_frame/flat/oak[frame_processed=3]"
+        }
+      },
+      "name": "Риштування шлюпки",
+      "text": "До кожного риштування додати чотири дошки.",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     ",
+            "     "
+          ],
+          [
+            "  12 ",
+            "  34 ",
+            " 1562",
+            " 30a4",
+            " 3aa4",
+            " 3aa4",
+            " 7889"
+          ]
+        ],
+        "mapping": {
+          "1": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=inner_right,frame_processed=7]",
+          "2": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=inner_left,frame_processed=7]",
+          "3": "firmaciv:wood/watercraft_frame/angled/oak[facing=north,shape=straight,frame_processed=7]",
+          "4": "firmaciv:wood/watercraft_frame/angled/oak[facing=south,shape=straight,frame_processed=7]",
+          "5": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=outer_right,frame_processed=7]",
+          "6": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=outer_left,frame_processed=7]",
+          "7": "firmaciv:wood/watercraft_frame/angled/oak[facing=east,shape=inner_left,frame_processed=7]",
+          "8": "firmaciv:wood/watercraft_frame/angled/oak[facing=east,shape=straight,frame_processed=7]",
+          "9": "firmaciv:wood/watercraft_frame/angled/oak[facing=east,shape=inner_right,frame_processed=7]",
+          "0": "firmaciv:wood/watercraft_frame/flat/oak[frame_processed=7]",
+          "a": "firmaciv:wood/watercraft_frame/flat/oak[frame_processed=7]"
+        }
+      },
+      "name": "Риштування шлюпки",
+      "text": "Візьміть молоток в другу руку, та додайте по 4 мідних болтів до кожного риштування. Мідні болти виковуються з Мідного злитку.",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "     ",
+            "     ",
+            " L  R",
+            "     ",
+            "     ",
+            "     ",
+            " L  R"
+          ],
+          [
+            "  12 ",
+            "  34 ",
+            " 1562",
+            " 30a4",
+            " 3aa4",
+            " 3aa4",
+            " 7889"
+          ]
+        ],
+        "mapping": {
+          "1": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=inner_right,frame_processed=7]",
+          "2": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=inner_left,frame_processed=7]",
+          "3": "firmaciv:wood/watercraft_frame/angled/oak[facing=north,shape=straight,frame_processed=7]",
+          "4": "firmaciv:wood/watercraft_frame/angled/oak[facing=south,shape=straight,frame_processed=7]",
+          "5": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=outer_right,frame_processed=7]",
+          "6": "firmaciv:wood/watercraft_frame/angled/oak[facing=west,shape=outer_left,frame_processed=7]",
+          "7": "firmaciv:wood/watercraft_frame/angled/oak[facing=east,shape=inner_left,frame_processed=7]",
+          "8": "firmaciv:wood/watercraft_frame/angled/oak[facing=east,shape=straight,frame_processed=7]",
+          "9": "firmaciv:wood/watercraft_frame/angled/oak[facing=east,shape=inner_right,frame_processed=7]",
+          "0": "firmaciv:wood/watercraft_frame/flat/oak[frame_processed=7]",
+          "a": "firmaciv:wood/watercraft_frame/flat/oak[frame_processed=7]",
+          "L": "alekiships:cleat[facing=north]",
+          "R": "alekiships:cleat[facing=south]"
+        }
+      },
+      "name": "Риштування шлюпки",
+      "text": "Накінець, додайте кнехти до корпусу. Вони виковуються з Подвійного злитку сталі.",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Однак будівництво корпусу — це лише перший крок у будівництві шлюпа! Після завершення корпусу знайдіть синій значок молотка та натисніть $(item)$(k:key.use)$() щоб додати предмети, які відображаються поруч із вашим перехрестям, добудовуючи решту корабля.$(br2)Наступні сторінки містять рецепти унікальних предметів, які знадобляться для завершення будівництва."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "firmaciv:crafting/small_triangular_sail",
+      "recipe2": "firmaciv:crafting/medium_triangular_sail"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe2": "firmaciv:crafting/rope_coil",
+      "text": "Вам також потрібно додати якір, який виковується з Подвійного листу сталі."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

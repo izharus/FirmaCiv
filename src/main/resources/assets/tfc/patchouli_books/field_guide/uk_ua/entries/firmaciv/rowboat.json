@@ -1,0 +1,152 @@
+{
+  "name": "Веслові човни",
+  "category": "tfc:firmaciv",
+  "icon": "firmaciv:rowboat_icon_only",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Отже, ви досягли залізного віку і хочете покращення? Що ж, весловий човен саме для вас. Він має три сидіння, тому може вмістити 3 гравців або до 2 тварин, включаючи коней! Як завжди, ви також можете замінити сидіння (окрім сидіння пілота) на відсіки. Також можна розмістити два додаткових контейнера на кормі."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "firmaciv:textures/gui/book/rowboat_isometric.png"
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br)У весловому човні, порівняно з іншими, ви сидите спиною коли керуєте ним. Це забезпечує вам механічну перевагу, щоб ви могли докласти максимум зусиль до весел! Ви можете пливти від першої особи але, можливо, вам буде зручніше робити це від третьої особи, дивлячись на себе."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "firmaciv:crafting/watercraft_frame_angled",
+      "text": "Щоб побудувати весловий човен, вам потрібно почати з Корабельних риштувань. Вони дозволяють утримувати матеріали човна на місці під час будівництва. $(br)Потім розмістіть їх обличчям всередину на площі 2 на 3 блоки."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            "   ",
+            "   "
+          ],
+          [
+            " 12",
+            " 04",
+            " 56"
+          ]
+        ],
+        "mapping": {
+          "1": "firmaciv:watercraft_frame_angled[facing=west,shape=inner_right]",
+          "2": "firmaciv:watercraft_frame_angled[facing=west,shape=inner_left]",
+          "0": "firmaciv:watercraft_frame_angled[facing=north,shape=straight]",
+          "4": "firmaciv:watercraft_frame_angled[facing=south,shape=straight]",
+          "5": "firmaciv:watercraft_frame_angled[facing=east,shape=inner_left]",
+          "6": "firmaciv:watercraft_frame_angled[facing=east,shape=inner_right]"
+        }
+      },
+      "name": "Створення човна",
+      "text": "Корабельні риштування, розташовані для побудови веслового човна.",
+      "enable_visualize": true
+    },
+
+    {
+      "type": "patchouli:text",
+      "text": "Далі вам потрібно буде додати дошки з відповідної деревини міцних порід:$(br2)Акація$(br)Ясен$(br)Осика$(br)Береза$(br)Гренаділ$(br)Каштан$(br)Горіх$(br)Клен$(br)Дуб$(br)Палісандр$(br)Сикамор"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            "   ",
+            "   "
+          ],
+          [
+            " 12",
+            " 04",
+            " 56"
+          ]
+        ],
+        "mapping": {
+          "1": "firmaciv:wood/watercraft_frame/angled/hickory[facing=west,shape=inner_right,frame_processed=3]",
+          "2": "firmaciv:wood/watercraft_frame/angled/hickory[facing=west,shape=inner_left,frame_processed=3]",
+          "0": "firmaciv:wood/watercraft_frame/angled/hickory[facing=north,shape=straight,frame_processed=3]",
+          "4": "firmaciv:wood/watercraft_frame/angled/hickory[facing=south,shape=straight,frame_processed=3]",
+          "5": "firmaciv:wood/watercraft_frame/angled/hickory[facing=east,shape=inner_left,frame_processed=3]",
+          "6": "firmaciv:wood/watercraft_frame/angled/hickory[facing=east,shape=inner_right,frame_processed=3]"
+        }
+      },
+      "name": "Створення човна",
+      "text": "До кожного риштування додати чотири дошки.",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            "   ",
+            "   "
+          ],
+          [
+            " 12",
+            " 04",
+            " 56"
+          ]
+        ],
+        "mapping": {
+          "1": "firmaciv:wood/watercraft_frame/angled/hickory[facing=west,shape=inner_right,frame_processed=7]",
+          "2": "firmaciv:wood/watercraft_frame/angled/hickory[facing=west,shape=inner_left,frame_processed=7]",
+          "0": "firmaciv:wood/watercraft_frame/angled/hickory[facing=north,shape=straight,frame_processed=7]",
+          "4": "firmaciv:wood/watercraft_frame/angled/hickory[facing=south,shape=straight,frame_processed=7]",
+          "5": "firmaciv:wood/watercraft_frame/angled/hickory[facing=east,shape=inner_left,frame_processed=7]",
+          "6": "firmaciv:wood/watercraft_frame/angled/hickory[facing=east,shape=inner_right,frame_processed=7]"
+        }
+      },
+      "name": "Створення човна",
+      "text": "Візьміть молоток в другу руку, та додайте по 4 мідних болтів до кожного риштування. Мідні болти виковуються з Мідного злитку.",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " LR",
+            "   "
+          ],
+          [
+            " 12",
+            " 04",
+            " 56"
+          ]
+        ],
+        "mapping": {
+          "1": "firmaciv:wood/watercraft_frame/angled/hickory[facing=west,shape=inner_right,frame_processed=7]",
+          "2": "firmaciv:wood/watercraft_frame/angled/hickory[facing=west,shape=inner_left,frame_processed=7]",
+          "0": "firmaciv:wood/watercraft_frame/angled/hickory[facing=north,shape=straight,frame_processed=7]",
+          "4": "firmaciv:wood/watercraft_frame/angled/hickory[facing=south,shape=straight,frame_processed=7]",
+          "5": "firmaciv:wood/watercraft_frame/angled/hickory[facing=east,shape=inner_left,frame_processed=7]",
+          "6": "firmaciv:wood/watercraft_frame/angled/hickory[facing=east,shape=inner_right,frame_processed=7]",
+          "L": "alekiships:oarlock[facing=north]",
+          "R": "alekiships:oarlock[facing=south]"
+        }
+      },
+      "name": "Створення човна",
+      "text": "Накінець, додайте кочети по центру човна. Вони виковуються з Подвійного злитка ковкого заліза.",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe2": "alekiships:crafting/oar",
+      "text": "Тепер, додайте весла на кочети, натиснувши $(item)$(k:key.use)$() та відправляйтесь у дорогу!"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 3
+}
