@@ -1,0 +1,33 @@
+{
+  "name": "Байдарки",
+  "category": "tfc:firmaciv",
+  "icon": "firmaciv:kayak_with_paddle_icon_only",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Найкращий сухопутний друг у соло-пригоді. Звичайно, допомагає те, що це єдиний човен, який можна переносити як предмет. Це найшвидший човен для самотнього гравця, та найманевреніший!$(br2)Щоб підняти байдарку, просто зламайте її.",
+      "title": "Байдарка"
+    },
+    {
+      "type": "patchouli:image",
+      "title": "Байдарка",
+      "images": [
+        "firmaciv:textures/gui/book/kayak_isometric.png"
+      ],
+      "text": "Байдарки - це найменші та найбільш портативні човни."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "firmaciv:crafting/kayak",
+      "recipe2": "firmaciv:crafting/kayak_paddle"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "soaking",
+      "recipe": "firmaciv:barrel/large_waterproof_hide_olive",
+      "text": "Замочіть Підготовлену велику шкуру в Топленому жирі, або в Оливковій олії, щоб зробити її поверхню непроникною для води."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2
+}
