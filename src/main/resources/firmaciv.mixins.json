@@ -10,6 +10,8 @@
     "EntityInputMixin",
     "VehicleWaterMixin",
     "CompartmentPlacementMixin",
+    "CleatLeashMixin",
+    "LeashableMixin",
     "VehiclePartAttachmentMixin"
   ],
   "client": [],
