@@ -1,21 +1,21 @@
 package com.alekiponi.firmaciv.events.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.function.Function;
 
 public class ServerConfig {
-    public final ForgeConfigSpec.BooleanValue canoeWoodRestriction;
+    public final ModConfigSpec.BooleanValue canoeWoodRestriction;
 
-    public final ForgeConfigSpec.BooleanValue shipWoodRestriction;
-    public final ForgeConfigSpec.BooleanValue forceReducedDebugInfo;
-    public final ForgeConfigSpec.BooleanValue disableVanillaBoatFunctionality;
+    public final ModConfigSpec.BooleanValue shipWoodRestriction;
+    public final ModConfigSpec.BooleanValue forceReducedDebugInfo;
+    public final ModConfigSpec.BooleanValue disableVanillaBoatFunctionality;
 
-    public final ForgeConfigSpec.BooleanValue changeLatitudeLongitudeBasedOnClimateConfig;
-    public final ForgeConfigSpec.BooleanValue enableParallelSourceCreationAtSeaLevel;
+    public final ModConfigSpec.BooleanValue changeLatitudeLongitudeBasedOnClimateConfig;
+    public final ModConfigSpec.BooleanValue enableParallelSourceCreationAtSeaLevel;
 
-    ServerConfig(ForgeConfigSpec.Builder innerBuilder) {
-        Function<String, ForgeConfigSpec.Builder> builder = (name) -> {
+    ServerConfig(ModConfigSpec.Builder innerBuilder) {
+        Function<String, ModConfigSpec.Builder> builder = (name) -> {
             return innerBuilder.translation("firmaciv.config.server." + name);
         };
         innerBuilder.push("general");

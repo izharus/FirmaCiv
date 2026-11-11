@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 public class CanoeEntityModel extends EntityModel<CanoeEntity> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
-            new ResourceLocation(Firmaciv.MOD_ID, "canoe_entity"), "main");
+            ResourceLocation.fromNamespaceAndPath(Firmaciv.MOD_ID, "canoe_entity"), "main");
     private final ModelPart middle_stern;
     private final ModelPart middle_mid;
     private final ModelPart middle_bow;
@@ -205,9 +205,9 @@ public class CanoeEntityModel extends EntityModel<CanoeEntity> {
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay,
-                               float red, float green, float blue, float alpha) {
-        bow.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        stern.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        middle_bow.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+                               int color) {
+        bow.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        stern.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        middle_bow.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

@@ -15,7 +15,7 @@ import snownee.jade.api.config.IPluginConfig;
 public enum BarrelCompartmentProvider implements IEntityComponentProvider {
     INSTANCE;
 
-    public static final ResourceLocation NAME = new ResourceLocation(Firmaciv.MOD_ID, "barrel");
+    public static final ResourceLocation NAME = ResourceLocation.fromNamespaceAndPath(Firmaciv.MOD_ID, "barrel");
 
     @Override
     public void appendTooltip(final ITooltip tooltip, final EntityAccessor entityAccessor,
@@ -32,12 +32,11 @@ public enum BarrelCompartmentProvider implements IEntityComponentProvider {
 
         if (recipe == null) return;
 
-        tooltip.add(recipe.getTranslationComponent());
+        tooltip.add(barrelCompartment.getRecipeTooltip());
         // this is the translation key used in the barrel class, if that changes we should change it in barrel screen too.
         final ICalendar calendar = Calendars.get(barrelCompartment.level());
         tooltip.add(Component.translatable("tfc.jade.sealed_date",
-                ICalendar.getTimeAndDate(calendar.ticksToCalendarTicks(barrelCompartment.getSealedTick()),
-                        calendar.getCalendarDaysInMonth())));
+                calendar.getExactTimeAndDate(barrelCompartment.getSealedTick())));
         tooltip.add(Component.translatable("tfc.jade.time_left", calendar.getTimeDelta(tickLeft)));
     }
 

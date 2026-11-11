@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+
 
 public class BarrelCompartmentRenderer extends BlockCompartmentRenderer<TFCBarrelCompartmentEntity> {
 
@@ -27,7 +27,7 @@ public class BarrelCompartmentRenderer extends BlockCompartmentRenderer<TFCBarre
 
         if (compartmentEntity.isSealed()) return;
 
-        compartmentEntity.getCapability(ForgeCapabilities.FLUID_HANDLER)
+        java.util.Optional.ofNullable(compartmentEntity.getFluidHandler(null))
                 .map(fluidHandler -> fluidHandler.getFluidInTank(0)).filter(fluidStack -> !fluidStack.isEmpty())
                 .ifPresent(fluidStack -> {
                     final float fillPercent = (float) fluidStack.getAmount() / (float) TFCConfig.SERVER.barrelCapacity.get();
@@ -36,7 +36,7 @@ public class BarrelCompartmentRenderer extends BlockCompartmentRenderer<TFCBarre
                             0.1875F + subtract, 0.8125F - subtract, 0.8125F - subtract,
                             0.140625F + 0.734375F * fillPercent, OverlayTexture.NO_OVERLAY, packedLight);
                 });
-        compartmentEntity.getCapability(ForgeCapabilities.ITEM_HANDLER)
+        java.util.Optional.ofNullable(compartmentEntity.getItemHandler(null))
                 .map(itemHandler -> itemHandler.getStackInSlot(BarrelBlockEntity.SLOT_ITEM))
                 .filter(itemStack -> !itemStack.isEmpty()).ifPresent(itemStack -> {
                     poseStack.pushPose();

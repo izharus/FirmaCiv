@@ -1,6 +1,6 @@
 package com.alekiponi.firmaciv.common.block;
 
-import com.alekiponi.alekiroofs.SquaredAngleBlock;
+
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -43,7 +43,7 @@ public class AngledThatchRoofingBlock extends SquaredAngleBlock implements IForg
     //TODO implement swapping between stair and angled variants
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(final BlockState blockState, final Level level, final BlockPos blockPos,
+    public net.minecraft.world.ItemInteractionResult useItemOn(final ItemStack heldStack, final BlockState blockState, final Level level, final BlockPos blockPos,
                                  final Player player, final InteractionHand hand, final BlockHitResult hitResult) {
         ItemStack item = player.getItemInHand(player.getUsedItemHand());
         if(item.is(TFCItems.STRAW.get())){
@@ -53,10 +53,10 @@ public class AngledThatchRoofingBlock extends SquaredAngleBlock implements IForg
             BlockState state = blockState;
             level.destroyBlock(blockPos, false, player);
             level.setBlock(blockPos, FirmacivBlocks.THATCH_ROOFING_STAIRS.get().withPropertiesOf(state), 2);
-            return InteractionResult.SUCCESS;
+            return net.minecraft.world.ItemInteractionResult.SUCCESS;
         }
 
-        return InteractionResult.PASS;
+        return net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
 

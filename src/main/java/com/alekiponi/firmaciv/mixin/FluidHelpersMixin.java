@@ -17,7 +17,7 @@ import java.util.Optional;
 @Mixin(FluidHelpers.class)
 public abstract class FluidHelpersMixin {
     @Inject(method = "getNewFluidWithMixing", at = @At(value = "HEAD"), cancellable = true, remap=false)
-    private static void injectCanalSourceCreation(FlowingFluid self, Level level, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff, CallbackInfoReturnable<FluidState> cir) {
+    private static void injectCanalSourceCreation(FlowingFluid self, Level level, BlockPos pos, BlockState blockStateIn, int dropOff, CallbackInfoReturnable<FluidState> cir) {
         Optional<FluidState> createdCanalSource = Helper.canalSourceCreation(self, level, pos, blockStateIn);
         createdCanalSource.ifPresent(cir::setReturnValue);
     }

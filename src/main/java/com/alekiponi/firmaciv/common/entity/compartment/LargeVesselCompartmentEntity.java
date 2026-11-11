@@ -1,7 +1,7 @@
 package com.alekiponi.firmaciv.common.entity.compartment;
 
-import com.alekiponi.alekiships.common.entity.vehiclehelper.CompartmentType;
-import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.*;
+import net.minecraft.world.entity.EntityType;
+import com.alekiponi.alekiships.common.entity.compartment.*;
 import com.alekiponi.alekiships.util.CommonHelper;
 import com.alekiponi.firmaciv.common.menu.LargeVesselCompartmentMenu;
 import net.dries007.tfc.client.TFCSounds;
@@ -9,10 +9,10 @@ import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
 import net.dries007.tfc.common.blocks.LargeVesselBlock;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.SidedHandler;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodTraits;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.food.FoodTraits;
+import net.dries007.tfc.common.component.size.ItemSizeManager;
+import net.dries007.tfc.common.component.size.Size;
 import net.dries007.tfc.config.TFCConfig;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -36,13 +36,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -58,11 +54,11 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
 
     private final LargeVesselCompartmentEntity.VesselInventory inventory = new LargeVesselCompartmentEntity.VesselInventory(
             this);
-    private final SidedHandler.Builder<IItemHandler> sidedInventory = new SidedHandler.Builder<>(this.inventory);
+    private final SidedHandler<IItemHandler> sidedInventory = new SidedHandler<>(this.inventory);
     private final NonNullList<ItemStack> itemStacks = NonNullList.withSize(LargeVesselBlockEntity.SLOTS,
             ItemStack.EMPTY);
 
-    public LargeVesselCompartmentEntity(final CompartmentType<? extends LargeVesselCompartmentEntity> compartmentType,
+    public LargeVesselCompartmentEntity(final EntityType<? extends LargeVesselCompartmentEntity> compartmentType,
             final Level level) {
         super(compartmentType, level);
 
@@ -74,7 +70,7 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
         }
     }
 
-    public LargeVesselCompartmentEntity(final CompartmentType<? extends LargeVesselCompartmentEntity> compartmentType,
+    public LargeVesselCompartmentEntity(final EntityType<? extends LargeVesselCompartmentEntity> compartmentType,
             final Level level, final ItemStack itemStack) {
         this(compartmentType, level);
 
@@ -83,15 +79,7 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
 
         this.setDisplayBlockState(blockItem.getBlock().defaultBlockState());
 
-        if (itemStack.hasCustomHoverName()) {
-            this.setCustomName(itemStack.getHoverName());
-        }
-
-        final CompoundTag blockEntityTag = BlockItem.getBlockEntityData(itemStack);
-        if (blockEntityTag != null) {
-            this.readContents(blockEntityTag);
-            this.setDisplayBlockState(this.getDisplayBlockState().setValue(LargeVesselBlock.SEALED, true));
-        }
+        this.applyComponentsFromItemStack(itemStack);
     }
 
     public static void toggleSeal(final LargeVesselCompartmentEntity vesselCompartment) {
@@ -105,9 +93,9 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_ID_DISPLAY_BLOCK, Blocks.AIR.defaultBlockState());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ID_DISPLAY_BLOCK, Blocks.AIR.defaultBlockState());
     }
 
     @Override
@@ -118,7 +106,7 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
         }
 
         if (!this.level().isClientSide && player instanceof final ServerPlayer serverPlayer) {
-            NetworkHooks.openScreen(serverPlayer, this.getMenuProvider(),
+            serverPlayer.openMenu(this.getMenuProvider(),
                     friendlyByteBuf -> friendlyByteBuf.writeVarInt(this.getId()));
             return InteractionResult.CONSUME;
         }
@@ -134,7 +122,7 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
     }
 
     protected void saveContents(final CompoundTag compoundTag) {
-        compoundTag.put("inventory", this.inventory.serializeNBT());
+        compoundTag.put("inventory", this.inventory.serializeNBT(this.registryAccess()));
     }
 
     @Override
@@ -145,38 +133,17 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
     }
 
     protected void readContents(final CompoundTag compoundTag) {
-        this.inventory.deserializeNBT(compoundTag.getCompound("inventory"));
+        this.inventory.deserializeNBT(this.registryAccess(), compoundTag.getCompound("inventory"));
     }
 
     @Override
-    protected ItemStack getDropStack() {
-        final ItemStack dropStack = new ItemStack(this.getDisplayBlockState().getBlock());
-
-        // Not sealed so just drop the barrel
-        if (!this.isSealed()) return dropStack;
-
-        final CompoundTag compoundTag = new CompoundTag();
-
-        this.saveContents(compoundTag);
-
-        if (!compoundTag.isEmpty()) {
-            dropStack.addTagElement(BlockItem.BLOCK_ENTITY_TAG, compoundTag);
-        }
-
-        return dropStack;
+    public ItemStack getDropStack() {
+        ItemStack result = new ItemStack(getDisplayBlockState().getBlock());
+        if (isSealed()) result.applyComponents(collectComponents());
+        return result;
     }
 
-    @Override
-    protected void destroy(final DamageSource damageSource) {
-        if (this.isSealed()) {
-            super.destroy(damageSource);
-            return;
-        }
 
-        CommonHelper.dropContents(this.level(), this.getX(), CommonHelper.maxHeightOfCollidableEntities(this),
-                this.getZ(), this);
-        super.destroy(damageSource);
-    }
 
     @Nullable
     @Override
@@ -186,6 +153,9 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
 
     @Override
     protected void onBreak() {
+        if (!isSealed() && level().getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_DOENTITYDROPS)) {
+            CommonHelper.dropContents(level(), getX(), CommonHelper.maxHeightOfCollidableEntities(this), getZ(), this);
+        }
         BlockCompartment.playBreakSound(this);
     }
 
@@ -245,13 +215,12 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
                 this.random.nextFloat() + 0.7F + 0.3F);
     }
 
-    @Override
     public final CompoundTag saveForItemStack() {
         final CompoundTag compoundTag = new CompoundTag();
         this.saveContents(compoundTag);
         if (this.hasCustomName()) {
-            compoundTag.putString(ContainerCompartmentEntity.CUSTOM_NAME_KEY,
-                    Component.Serializer.toJson(this.getCustomName()));
+            compoundTag.putString("CustomName",
+                    Component.Serializer.toJson(this.getCustomName(), this.registryAccess()));
         }
         return compoundTag;
     }
@@ -268,34 +237,11 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
         return new LargeVesselCompartmentMenu(id, playerInventory, this);
     }
 
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(final Capability<T> capability, final @Nullable Direction facing) {
-        if (this.isAlive()) {
-            if (capability == ForgeCapabilities.ITEM_HANDLER) {
-                return this.sidedInventory.getSidedHandler(facing).cast();
-            }
-        }
 
-        return super.getCapability(capability, facing);
-    }
 
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        this.sidedInventory.invalidate();
-    }
 
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        if (TFCConfig.SERVER.largeVesselEnableAutomation.get()) {
-            this.sidedInventory.on((new PartialItemHandler(this.inventory)).insert(0, 1, 2, 3, 4, 5, 6, 7, 8),
-                    (d) -> d != Direction.DOWN);
-            this.sidedInventory.on((new PartialItemHandler(this.inventory)).extract(0, 1, 2, 3, 4, 5, 6, 7, 8),
-                    Direction.DOWN);
-        }
-    }
+
+
 
     @Override
     public final int getContainerSize() {
@@ -370,16 +316,15 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
         }
 
         @Override
-        public CompoundTag serializeNBT() {
+        public CompoundTag serializeNBT(net.minecraft.core.HolderLookup.Provider registries) {
             final CompoundTag compoundTag = new CompoundTag();
             { // Serialize our container wrapper slots
                 final ListTag nbtTagList = new ListTag();
                 for (int slotIndex = 0; slotIndex < this.vesselCompartment.getContainerSize(); slotIndex++) {
                     final ItemStack slotStack = this.vesselCompartment.getItem(slotIndex);
                     if (!slotStack.isEmpty()) {
-                        final CompoundTag itemTag = new CompoundTag();
+                        final CompoundTag itemTag = (CompoundTag) slotStack.save(registries);
                         itemTag.putInt("Slot", slotIndex);
-                        slotStack.save(itemTag);
                         nbtTagList.add(itemTag);
                     }
                 }
@@ -390,14 +335,14 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
         }
 
         @Override
-        public void deserializeNBT(final CompoundTag compoundTag) {
+        public void deserializeNBT(net.minecraft.core.HolderLookup.Provider registries, final CompoundTag compoundTag) {
             { // Deserialize our container wrapper slots
                 final ListTag tagList = compoundTag.getList("Items", Tag.TAG_COMPOUND);
                 for (int i = 0; i < tagList.size(); i++) {
                     final CompoundTag itemTags = tagList.getCompound(i);
                     final int slotIndex = itemTags.getInt("Slot");
                     if (slotIndex >= 0 && slotIndex < this.vesselCompartment.getContainerSize()) {
-                        this.vesselCompartment.setItem(slotIndex, ItemStack.of(itemTags));
+                        this.vesselCompartment.setItem(slotIndex, ItemStack.parseOptional(registries, itemTags));
                     }
                 }
             }
@@ -406,5 +351,23 @@ public class LargeVesselCompartmentEntity extends AbstractCompartmentEntity impl
         private boolean canModify() {
             return !this.vesselCompartment.isSealed();
         }
+    }
+
+    public net.neoforged.neoforge.items.IItemHandler getItemHandler(@Nullable Direction side) { return sidedInventory.get(side); }
+
+    @Override public void applyComponentsFromItemStack(ItemStack stack) {
+        setCustomName(stack.get(net.minecraft.core.component.DataComponents.CUSTOM_NAME));
+        var data = stack.get(net.dries007.tfc.common.component.TFCComponents.CONTENTS);
+        if (data != null) {
+            setDisplayBlockState(getDisplayBlockState().setValue(LargeVesselBlock.SEALED, true));
+            for (int i = 0; i < Math.min(data.contents().size(), getContainerSize()); i++) setItem(i, data.contents().get(i).copy());
+        }
+    }
+    @Override public net.minecraft.core.component.DataComponentMap collectComponents() {
+        var builder = net.minecraft.core.component.DataComponentMap.builder();
+        if (hasCustomName()) builder.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, getCustomName());
+        builder.set(net.dries007.tfc.common.component.TFCComponents.CONTENTS,
+            net.dries007.tfc.common.component.item.ItemListComponent.of(inventory));
+        return builder.build();
     }
 }

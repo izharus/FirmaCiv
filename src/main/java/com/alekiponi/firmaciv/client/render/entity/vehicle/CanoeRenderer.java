@@ -13,13 +13,13 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class CanoeRenderer extends EntityRenderer<CanoeEntity> {
 
-    public static final ResourceLocation DAMAGE_OVERLAY = new ResourceLocation(Firmaciv.MOD_ID,
+    public static final ResourceLocation DAMAGE_OVERLAY = ResourceLocation.fromNamespaceAndPath(Firmaciv.MOD_ID,
             "textures/entity/watercraft/dugout_canoe/damage_overlay.png");
     protected final CanoeEntityModel canoeModel = new CanoeEntityModel();
     protected final ResourceLocation canoeTexture;
@@ -56,7 +56,7 @@ public class CanoeRenderer extends EntityRenderer<CanoeEntity> {
             return;
         }
 
-        this.canoeModel.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+        this.canoeModel.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 
         if (canoeEntity.getLength() >= 4) {
             this.canoeModel.getMiddleMid().render(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
@@ -85,8 +85,7 @@ public class CanoeRenderer extends EntityRenderer<CanoeEntity> {
             final VertexConsumer damageVertexConsumer = bufferSource.getBuffer(
                     RenderType.entityTranslucent(DAMAGE_OVERLAY));
             float alpha = Mth.clamp((canoeEntity.getDamage() / (canoeEntity.getDamageThreshold())) * 0.75F, 0, 0.5F);
-            this.canoeModel.renderToBuffer(poseStack, damageVertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1,
-                    1, 1, alpha);
+            this.canoeModel.renderToBuffer(poseStack, damageVertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, net.minecraft.util.FastColor.ARGB32.color((int) (255 * (alpha)), 255, 255, 255));
         }
 
         poseStack.popPose();

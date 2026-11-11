@@ -1,7 +1,7 @@
 package com.alekiponi.firmaciv.common.entity.vehicle;
 
 import com.alekiponi.alekiships.common.entity.vehicle.SloopUnderConstructionEntity;
-import com.alekiponi.alekiships.util.BoatMaterial;
+import com.alekiponi.firmaciv.util.BoatMaterial;
 import com.alekiponi.firmaciv.common.item.FirmacivItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -12,20 +12,10 @@ public class FirmacivSloopUnderConstructionEntity extends SloopUnderConstruction
     public FirmacivSloopUnderConstructionEntity(
             final EntityType<? extends FirmacivSloopUnderConstructionEntity> entityType, final Level level,
             final BoatMaterial boatMaterial) {
-        super(entityType, level, boatMaterial);
+        super(entityType, level);
+        this.setVariant(level.registryAccess().registryOrThrow(com.alekiponi.alekiships.common.AlekiShipsRegistries.CONSTRUCTION_SLOOP_VARIANT)
+            .getHolderOrThrow(net.minecraft.resources.ResourceKey.create(com.alekiponi.alekiships.common.AlekiShipsRegistries.CONSTRUCTION_SLOOP_VARIANT,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("firmaciv", boatMaterial.getSerializedName()))));
     }
 
-    public Pair<Item, Integer> getMainsailItem() {
-        return new Pair(FirmacivItems.MEDIUM_TRIANGULAR_SAIL.get(),1);
-    }
-
-    @Override
-    public Pair<Item, Integer> getJibsailItem() {
-        return new Pair<>(FirmacivItems.SMALL_TRIANGULAR_SAIL.get(),1);
-    }
-
-    @Override
-    public Pair<Item, Integer> getRiggingItem() {
-        return new Pair<>(FirmacivItems.ROPE_COIL.get(), 8);
-    }
 }

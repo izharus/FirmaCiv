@@ -1,7 +1,7 @@
 package com.alekiponi.firmaciv.common.entity.compartment;
 
-import com.alekiponi.alekiships.common.entity.vehiclehelper.CompartmentType;
-import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.*;
+import net.minecraft.world.entity.EntityType;
+import com.alekiponi.alekiships.common.entity.compartment.*;
 import com.alekiponi.alekiships.util.CommonHelper;
 import com.alekiponi.firmaciv.common.menu.BarrelCompartmentMenu;
 import com.alekiponi.firmaciv.network.ClientBoundBarrelCompartmentUpdatePacket;
@@ -14,16 +14,16 @@ import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.capabilities.PartialFluidHandler;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.capabilities.SidedHandler;
-import net.dries007.tfc.common.capabilities.size.IItemSize;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.capabilities.size.Size;
-import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.common.component.size.IItemSize;
+import net.dries007.tfc.common.component.size.ItemSizeManager;
+import net.dries007.tfc.common.component.size.Size;
+import net.dries007.tfc.common.component.size.Weight;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.inventory.BarrelInventory;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.common.recipes.input.BarrelInventory;
+
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.CalendarTransaction;
@@ -59,19 +59,15 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -87,7 +83,7 @@ import java.util.Optional;
  * We cannot extend {@link ContainerCompartmentEntity} as our menu {@link BarrelCompartmentMenu} needs extra data
  * (the compartment Entity) in order to properly function.
  */
-public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implements BlockCompartment, CompartmentCloneable, SimpleBlockMenuCompartment, MenuConstructor, Container, IEntityAdditionalSpawnData {
+public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implements BlockCompartment, CompartmentCloneable, SimpleBlockMenuCompartment, MenuConstructor, Container, IEntityWithComplexSpawn {
 
     /**
      * Kinda stupid but simple way to set {@link #recipeTick} to 0 so jade works correctly.
@@ -96,8 +92,8 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
     private static final EntityDataAccessor<BlockState> DATA_ID_DISPLAY_BLOCK = SynchedEntityData.defineId(
             TFCBarrelCompartmentEntity.class, EntityDataSerializers.BLOCK_STATE);
     private final BarrelCompartmentInventory inventory = new BarrelCompartmentInventory(this);
-    private final SidedHandler.Builder<IItemHandler> sidedInventory = new SidedHandler.Builder<>(this.inventory);
-    private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory = new SidedHandler.Builder<>(this.inventory);
+    private final SidedHandler<IItemHandler> sidedInventory = new SidedHandler<>(this.inventory);
+    private final SidedHandler<IFluidHandler> sidedFluidInventory = new SidedHandler<>(this.inventory);
     private final NonNullList<ItemStack> itemStacks = NonNullList.withSize(BarrelBlockEntity.SLOTS, ItemStack.EMPTY);
     @Nullable
     private ResourceLocation recipeName;
@@ -121,28 +117,21 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
      */
     private boolean needsInstantRecipeUpdate;
 
-    public TFCBarrelCompartmentEntity(final CompartmentType<? extends TFCBarrelCompartmentEntity> entityType,
+    public TFCBarrelCompartmentEntity(final EntityType<? extends TFCBarrelCompartmentEntity> entityType,
             final Level level) {
         super(entityType, level);
+        configureAutomation();
     }
 
-    public TFCBarrelCompartmentEntity(final CompartmentType<? extends TFCBarrelCompartmentEntity> compartmentType,
+    public TFCBarrelCompartmentEntity(final EntityType<? extends TFCBarrelCompartmentEntity> compartmentType,
             final Level level, final ItemStack itemStack) {
-        super(compartmentType, level);
+        this(compartmentType, level);
 
         if (!(itemStack.getItem() instanceof BlockItem blockItem)) return;
 
         this.setDisplayBlockState(blockItem.getBlock().defaultBlockState());
 
-        if (itemStack.hasCustomHoverName()) {
-            this.setCustomName(itemStack.getHoverName());
-        }
-
-        final CompoundTag blockEntityTag = BlockItem.getBlockEntityData(itemStack);
-        if (blockEntityTag != null) {
-            this.readCommonSaveData(blockEntityTag);
-            this.setDisplayBlockState(this.getDisplayBlockState().setValue(BarrelBlock.SEALED, true));
-        }
+        this.applyComponentsFromItemStack(itemStack);
     }
 
     public static void toggleSeal(final TFCBarrelCompartmentEntity barrelCompartment) {
@@ -163,15 +152,15 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
     private static void trySendUpdatePacket(final TFCBarrelCompartmentEntity barrelCompartment) {
         if (barrelCompartment.level().isClientSide) return;
 
-        PacketHandler.send(PacketDistributor.TRACKING_ENTITY.with(() -> barrelCompartment),
+        PacketDistributor.sendToPlayersTrackingEntity(barrelCompartment,
                 new ClientBoundBarrelCompartmentUpdatePacket(barrelCompartment, barrelCompartment.inventory.getFluid(),
                         barrelCompartment.inventory.getStackInSlot(BarrelBlockEntity.SLOT_ITEM)));
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_ID_DISPLAY_BLOCK, Blocks.AIR.defaultBlockState());
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ID_DISPLAY_BLOCK, Blocks.AIR.defaultBlockState());
     }
 
     @Override
@@ -182,7 +171,7 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         // Must run before checkForCalendarUpdate(), as this sets the current recipe.
         if (this.recipeName != null) {
             this.recipe = this.level().getRecipeManager().byKey(this.recipeName)
-                    .map(recipe -> recipe instanceof SealedBarrelRecipe sealedRecipe ? sealedRecipe : null)
+                    .map(recipe -> recipe.value() instanceof SealedBarrelRecipe sealedRecipe ? sealedRecipe : null)
                     .orElse(null);
             this.recipeName = null;
         }
@@ -204,7 +193,7 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         if (recipe != null && sealed) {
             final int durationSealed = (int) (Calendars.SERVER.getTicks() - this.recipeTick);
             if (!recipe.isInfinite() && durationSealed > recipe.getDuration()) {
-                if (recipe.matches(this.inventory, this.level())) {
+                if (recipe.matches(this.inventory)) {
                     // Recipe completed, so fill outputs
                     recipe.assembleOutputs(this.inventory);
                     this.playSound(recipe.getCompleteSound(), SoundSource.BLOCKS, 1 + this.random.nextFloat(),
@@ -229,17 +218,15 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
             if (this.inventory.excess.isEmpty()) // Excess must be empty for instant recipes to apply
             {
                 final RecipeManager recipeManager = this.level().getRecipeManager();
-                Optional.<BarrelRecipe>empty() // For type erasure
-                        .or(() -> recipeManager.getRecipeFor(TFCRecipeTypes.BARREL_INSTANT.get(), this.inventory,
-                                this.level()))
-                        .or(() -> recipeManager.getRecipeFor(TFCRecipeTypes.BARREL_INSTANT_FLUID.get(), this.inventory,
-                                this.level())).ifPresent(instantRecipe -> {
-                            instantRecipe.assembleOutputs(this.inventory);
+                Optional.<net.minecraft.world.item.crafting.RecipeHolder<? extends BarrelRecipe>>empty() // For type erasure
+                        .or(() -> Optional.ofNullable(BarrelRecipe.get(this.level(), TFCRecipeTypes.BARREL_INSTANT, this.inventory)))
+                        .or(() -> Optional.ofNullable(BarrelRecipe.get(this.level(), TFCRecipeTypes.BARREL_INSTANT_FLUID, this.inventory))).ifPresent(instantRecipe -> {
+                            instantRecipe.value().assembleOutputs(this.inventory);
                             if (this.soundCooldownTicks == 0) {
-                                this.playSound(instantRecipe.getCompleteSound(), SoundSource.BLOCKS,
+                                this.playSound(instantRecipe.value().getCompleteSound(), SoundSource.BLOCKS,
                                         1 + this.random.nextFloat(), this.random.nextFloat() + 0.7F + 0.3F);
                                 this.soundCooldownTicks = 5;
-                                if (instantRecipe.getCompleteSound() == SoundEvents.FIRE_EXTINGUISH && this.level() instanceof ServerLevel server) {
+                                if (instantRecipe.value().getCompleteSound() == SoundEvents.FIRE_EXTINGUISH && this.level() instanceof ServerLevel server) {
                                     server.sendParticles(TFCParticles.BUBBLE.get(),
                                             this.getX() + this.random.nextFloat() * 0.375 - 0.1875, this.getY() + 15f / 16f,
                                             this.getZ() + this.random.nextFloat() * 0.375 - 0.1875, 6, 0, 0, 0, 1);
@@ -281,12 +268,12 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         }
 
         if (!this.isSealed() && FluidHelpers.transferBetweenBlockHandlerAndItem(heldStack, this.inventory, this.level(),
-                this.blockPosition(), new FluidHelpers.AfterTransferWithPlayer(player, hand))) {
+                this.blockPosition(), FluidHelpers.with(player, hand))) {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
         if (!this.level().isClientSide && player instanceof final ServerPlayer serverPlayer) {
-            NetworkHooks.openScreen(serverPlayer, this.getMenuProvider(),
+            serverPlayer.openMenu(this.getMenuProvider(),
                     friendlyByteBuf -> friendlyByteBuf.writeVarInt(this.getId()));
             return InteractionResult.CONSUME;
         }
@@ -295,21 +282,10 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
     }
 
     @Override
-    protected ItemStack getDropStack() {
-        final ItemStack dropStack = new ItemStack(this.getDisplayBlockState().getBlock());
-
-        // Not sealed so just drop the barrel
-        if (!this.isSealed()) return dropStack;
-
-        final CompoundTag compoundTag = new CompoundTag();
-
-        this.addCommonSaveData(compoundTag);
-
-        if (!compoundTag.isEmpty()) {
-            dropStack.addTagElement(BlockItem.BLOCK_ENTITY_TAG, compoundTag);
-        }
-
-        return dropStack;
+    public ItemStack getDropStack() {
+        ItemStack result = new ItemStack(getDisplayBlockState().getBlock());
+        if (isSealed()) result.applyComponents(collectComponents());
+        return result;
     }
 
     @Override
@@ -338,9 +314,9 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         this.recipe = null;
         this.recipeName = null;
         if (compoundTag.contains("recipe", Tag.TAG_STRING)) {
-            this.recipeName = new ResourceLocation(compoundTag.getString("recipe"));
+            this.recipeName = ResourceLocation.parse(compoundTag.getString("recipe"));
             this.recipe = this.level().getRecipeManager().byKey(this.recipeName)
-                    .map(recipe -> recipe instanceof SealedBarrelRecipe barrelRecipe ? barrelRecipe : null)
+                    .map(recipe -> recipe.value() instanceof SealedBarrelRecipe barrelRecipe ? barrelRecipe : null)
                     .orElse(null);
         }
         this.inventory.deserializeNBT(compoundTag.getCompound("inventory"));
@@ -352,35 +328,24 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         compoundTag.putLong("recipeTick", this.recipeTick);
         if (this.recipe != null) {
             // Recipe saved to sync to client
-            compoundTag.putString("recipe", this.recipe.getId().toString());
+            compoundTag.putString("recipe", this.level().getRecipeManager().getRecipes().stream().filter(holder -> holder.value() == this.recipe).map(holder -> holder.id().toString()).findFirst().orElse(""));
         } else if (this.recipeName != null) {
             compoundTag.putString("recipeName", this.recipeName.toString());
         }
         compoundTag.put("inventory", this.inventory.serializeNBT());
     }
 
-    @Override
     public CompoundTag saveForItemStack() {
         final CompoundTag compoundTag = new CompoundTag();
         this.addCommonSaveData(compoundTag);
         if (this.hasCustomName()) {
-            compoundTag.putString(ContainerCompartmentEntity.CUSTOM_NAME_KEY,
-                    Component.Serializer.toJson(this.getCustomName()));
+            compoundTag.putString("CustomName",
+                    Component.Serializer.toJson(this.getCustomName(), this.registryAccess()));
         }
         return compoundTag;
     }
 
-    @Override
-    protected void destroy(final DamageSource damageSource) {
-        if (this.isSealed()) {
-            super.destroy(damageSource);
-            return;
-        }
 
-        CommonHelper.dropContents(this.level(), this.getX(), CommonHelper.maxHeightOfCollidableEntities(this),
-                this.getZ(), this);
-        super.destroy(damageSource);
-    }
 
     private void updateFluidIOSlots() {
         final ItemStack input = this.inventory.getStackInSlot(BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN);
@@ -437,7 +402,7 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
                 calendarTransaction.add(-offset);
 
                 final BarrelRecipe recipe = this.recipe;
-                if (recipe.matches(this.inventory, null)) {
+                if (recipe.matches(this.inventory)) {
                     recipe.assembleOutputs(this.inventory);
                 }
                 this.updateRecipe();
@@ -463,10 +428,8 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         final SealedBarrelRecipe oldRecipe = this.recipe;
         if (this.inventory.excess.isEmpty()) {
             // Will only work on a recipe as long as the 'excess' is empty
-            this.recipe = this.level().getRecipeManager()
-                    .getRecipeFor(TFCRecipeTypes.BARREL_SEALED.get(), this.inventory, this.level()).orElse(null);
-            if (this.recipe != null && oldRecipe != this.recipe && (oldRecipe == null || !oldRecipe.getId()
-                    .equals(recipe.getId()))) {
+            this.recipe = Optional.ofNullable(BarrelRecipe.get(this.level(), TFCRecipeTypes.BARREL_SEALED, this.inventory)).map(net.minecraft.world.item.crafting.RecipeHolder::value).orElse(null);
+            if (this.recipe != null && oldRecipe != this.recipe) {
                 // The recipe has changed to a new one, so update the recipe ticks
                 this.recipeTick = Calendars.get(this.level()).getTicks();
             }
@@ -535,8 +498,7 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         if (!this.level().isClientSide) return 0;
 
         if (this.recipe == null) {
-            this.recipe = this.level().getRecipeManager()
-                    .getRecipeFor(TFCRecipeTypes.BARREL_SEALED.get(), this.inventory, this.level()).orElse(null);
+            this.recipe = Optional.ofNullable(BarrelRecipe.get(this.level(), TFCRecipeTypes.BARREL_SEALED, this.inventory)).map(net.minecraft.world.item.crafting.RecipeHolder::value).orElse(null);
         }
 
         if (this.recipe != null) {
@@ -564,8 +526,13 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
 
     @Override
     protected void onBreak() {
-        CommonHelper.dropContents(this.level(), this.getX(), CommonHelper.maxHeightOfCollidableEntities(this),
-                this.getZ(), this);
+        if (!isSealed() && level().getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_DOENTITYDROPS)) {
+            CommonHelper.dropContents(level(), getX(), CommonHelper.maxHeightOfCollidableEntities(this), getZ(), this);
+            for (ItemStack stack : inventory.excess) {
+                Containers.dropItemStack(level(), getX(), getY(), getZ(), stack);
+            }
+            inventory.excess.clear();
+        }
         BlockCompartment.playBreakSound(this);
     }
 
@@ -609,31 +576,11 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         this.entityData.set(DATA_ID_DISPLAY_BLOCK, blockState);
     }
 
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(final Capability<T> capability, final @Nullable Direction facing) {
-        if (this.isAlive()) {
-            if (capability == ForgeCapabilities.FLUID_HANDLER) {
-                return this.sidedFluidInventory.getSidedHandler(facing).cast();
-            }
-            if (capability == ForgeCapabilities.ITEM_HANDLER) {
-                return this.sidedInventory.getSidedHandler(facing).cast();
-            }
-        }
 
-        return super.getCapability(capability, facing);
-    }
 
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        this.sidedInventory.invalidate();
-        this.sidedFluidInventory.invalidate();
-    }
 
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
+
+    private void configureAutomation() {
         if (TFCConfig.SERVER.barrelEnableAutomation.get()) {
             this.sidedInventory.on(
                             new PartialItemHandler(this.inventory).insert(BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN)
@@ -641,8 +588,8 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
                     .on(new PartialItemHandler(this.inventory).insert(BarrelBlockEntity.SLOT_ITEM), Direction.UP)
                     .on(new PartialItemHandler(this.inventory).extract(BarrelBlockEntity.SLOT_ITEM),
                             Direction.UP.getOpposite());
-            this.sidedFluidInventory.on(new PartialFluidHandler(this.inventory).insert(), Direction.UP)
-                    .on(new PartialFluidHandler(this.inventory).extract(), direction -> direction != Direction.UP);
+            this.sidedFluidInventory.on(PartialFluidHandler.insertOnly(this.inventory), Direction.UP)
+                    .on(PartialFluidHandler.extractOnly(this.inventory), direction -> direction != Direction.UP);
         }
     }
 
@@ -712,30 +659,27 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
     }
 
     @Override
-    public void writeSpawnData(final FriendlyByteBuf buffer) {
-        buffer.writeFluidStack(this.inventory.getFluid());
-        buffer.writeItem(this.inventory.getStackInSlot(BarrelBlockEntity.SLOT_ITEM));
+    public void writeSpawnData(final net.minecraft.network.RegistryFriendlyByteBuf buffer) {
+        FluidStack.OPTIONAL_STREAM_CODEC.encode(buffer, this.inventory.getFluid());
+        ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, this.inventory.getStackInSlot(BarrelBlockEntity.SLOT_ITEM));
         buffer.writeVarLong(this.recipeTick);
     }
 
     @Override
-    public void readSpawnData(final FriendlyByteBuf additionalData) {
-        this.inventory.setFluid(additionalData.readFluidStack());
-        this.inventory.setStackInSlot(BarrelBlockEntity.SLOT_ITEM, additionalData.readItem());
+    public void readSpawnData(final net.minecraft.network.RegistryFriendlyByteBuf additionalData) {
+        this.inventory.setFluid(FluidStack.OPTIONAL_STREAM_CODEC.decode(additionalData));
+        this.inventory.setStackInSlot(BarrelBlockEntity.SLOT_ITEM, ItemStack.OPTIONAL_STREAM_CODEC.decode(additionalData));
         this.recipeTick = additionalData.readVarLong();
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
+
 
     @Override
     public final void clearContent() {
         this.itemStacks.clear();
     }
 
-    public final static class BarrelCompartmentInventory extends FluidTank implements BarrelInventory, EmptyInventory {
+    public final static class BarrelCompartmentInventory extends FluidTank implements BarrelInventory {
         private final TFCBarrelCompartmentEntity barrelCompartment;
         private final List<ItemStack> excess;
         /**
@@ -744,7 +688,7 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         private boolean mutable;
 
         public BarrelCompartmentInventory(final TFCBarrelCompartmentEntity barrelCompartment) {
-            super(Helpers.getValueOrDefault(TFCConfig.SERVER.barrelCapacity),
+            super(TFCConfig.SERVER.barrelCapacity.get(),
                     fluidStack -> Helpers.isFluid(fluidStack.getFluid(), TFCTags.Fluids.USABLE_IN_BARREL));
             this.barrelCompartment = barrelCompartment;
             this.excess = new ArrayList<>();
@@ -809,7 +753,7 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
             final ItemStack existing = this.getStackInSlot(slotIndex);
             int extractLimit = Math.min(this.getSlotLimit(slotIndex), insertStack.getMaxStackSize());
             if (!existing.isEmpty()) {
-                if (!ItemHandlerHelper.canItemStacksStack(insertStack, existing)) return insertStack;
+                if (!ItemStack.isSameItemSameComponents(insertStack, existing)) return insertStack;
 
                 extractLimit -= existing.getCount();
             }
@@ -870,7 +814,7 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
             return switch (slotIndex) {
                 case BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN ->
-                        Helpers.mightHaveCapability(itemStack, ForgeCapabilities.FLUID_HANDLER);
+                        itemStack.getCapability(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.ITEM) != null;
                 case BarrelBlockEntity.SLOT_ITEM -> {
                     // We only want to deny heavy/huge (aka things that can hold inventory).
                     // Other than that, barrels don't need a size restriction, and should in general be unrestricted, so we can allow any kind of recipe input (i.e. unfired large vessel)
@@ -896,9 +840,8 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
                 for (int slotIndex = 0; slotIndex < this.barrelCompartment.getContainerSize(); slotIndex++) {
                     final ItemStack slotStack = this.barrelCompartment.getItem(slotIndex);
                     if (!slotStack.isEmpty()) {
-                        final CompoundTag itemTag = new CompoundTag();
+                        final CompoundTag itemTag = (CompoundTag) slotStack.save(this.barrelCompartment.registryAccess());
                         itemTag.putInt("Slot", slotIndex);
-                        slotStack.save(itemTag);
                         nbtTagList.add(itemTag);
                     }
                 }
@@ -906,12 +849,12 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
                 itemStacks.put("Items", nbtTagList);
                 compoundTag.put("inventory", itemStacks);
             }
-            compoundTag.put("tank", this.fluid.writeToNBT(new CompoundTag()));
+            compoundTag.put("tank", this.fluid.saveOptional(this.barrelCompartment.registryAccess()));
 
             if (!this.excess.isEmpty()) {
                 final ListTag excessStacks = new ListTag();
                 for (final ItemStack itemStack : this.excess) {
-                    excessStacks.add(itemStack.save(new CompoundTag()));
+                    excessStacks.add(itemStack.save(this.barrelCompartment.registryAccess()));
                 }
                 compoundTag.put("excess", excessStacks);
             }
@@ -926,17 +869,17 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
                     final CompoundTag itemTags = tagList.getCompound(i);
                     final int slotIndex = itemTags.getInt("Slot");
                     if (slotIndex >= 0 && slotIndex < this.barrelCompartment.getContainerSize()) {
-                        this.barrelCompartment.setItem(slotIndex, ItemStack.of(itemTags));
+                        this.barrelCompartment.setItem(slotIndex, ItemStack.parseOptional(this.barrelCompartment.registryAccess(), itemTags));
                     }
                 }
             }
 
-            this.fluid = FluidStack.loadFluidStackFromNBT(compoundTag.getCompound("tank"));
+            this.fluid = FluidStack.parseOptional(this.barrelCompartment.registryAccess(), compoundTag.getCompound("tank"));
             this.excess.clear();
             if (compoundTag.contains("excess")) {
                 final ListTag excessNbt = compoundTag.getList("excess", Tag.TAG_COMPOUND);
                 for (int i = 0; i < excessNbt.size(); i++) {
-                    this.excess.add(ItemStack.of(excessNbt.getCompound(i)));
+                    this.excess.add(ItemStack.parseOptional(this.barrelCompartment.registryAccess(), excessNbt.getCompound(i)));
                 }
             }
         }
@@ -944,5 +887,37 @@ public class TFCBarrelCompartmentEntity extends AbstractCompartmentEntity implem
         private boolean canModify() {
             return this.mutable || this.barrelCompartment.canModify();
         }
+    }
+
+    public net.neoforged.neoforge.items.IItemHandler getItemHandler(@Nullable Direction side) { return sidedInventory.get(side); }
+
+    public net.neoforged.neoforge.fluids.capability.IFluidHandler getFluidHandler(@Nullable Direction side) { return sidedFluidInventory.get(side); }
+    @Override public void applyComponentsFromItemStack(ItemStack stack) {
+        setCustomName(stack.get(net.minecraft.core.component.DataComponents.CUSTOM_NAME));
+        var data = stack.get(net.dries007.tfc.common.component.TFCComponents.BARREL);
+        if (data != null) {
+            setDisplayBlockState(getDisplayBlockState().setValue(BarrelBlock.SEALED, true));
+            var contents = data.itemContent();
+            if (!contents.isEmpty()) setItem(BarrelBlockEntity.SLOT_ITEM, contents.getFirst().copy());
+            inventory.excess.clear();
+            for (int i = 1; i < contents.size(); i++) inventory.excess.add(contents.get(i).copy());
+            inventory.setFluid(data.fluidContent().copy());
+            sealedTick = data.sealedTick(); recipeTick = data.recipeTick();
+        }
+    }
+    @Override public net.minecraft.core.component.DataComponentMap collectComponents() {
+        var builder = net.minecraft.core.component.DataComponentMap.builder();
+        if (hasCustomName()) builder.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, getCustomName());
+        var contents = new java.util.ArrayList<ItemStack>();
+        contents.add(getItem(BarrelBlockEntity.SLOT_ITEM).copy());
+        inventory.excess.forEach(stack -> contents.add(stack.copy()));
+        builder.set(net.dries007.tfc.common.component.TFCComponents.BARREL,
+            new net.dries007.tfc.common.component.block.BarrelComponent(contents, inventory.getFluid().copy(), sealedTick, recipeTick));
+        return builder.build();
+    }
+
+    public Component getRecipeTooltip() {
+        return level().getRecipeManager().getRecipes().stream().filter(holder -> holder.value() == recipe)
+            .findFirst().map(holder -> Component.translatable("tfc.recipe.barrel." + holder.id().getNamespace() + "." + holder.id().getPath().replace('/', '.'))).orElse(Component.empty());
     }
 }

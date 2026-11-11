@@ -1,6 +1,6 @@
 package com.alekiponi.firmaciv.util;
 
-import com.alekiponi.alekiships.util.BoatMaterial;
+import com.alekiponi.firmaciv.util.BoatMaterial;
 import com.alekiponi.firmaciv.common.entity.vehicle.CanoeEntity;
 import net.minecraft.world.entity.EntityType;
 

@@ -3,9 +3,9 @@ package com.alekiponi.firmaciv.common.menu;
 import com.alekiponi.firmaciv.common.entity.compartment.LargeVesselCompartmentEntity;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.heat.IHeat;
+
+import net.dries007.tfc.common.component.heat.HeatCapability;
+import net.dries007.tfc.common.component.heat.IHeat;
 import net.dries007.tfc.common.container.ButtonHandlerContainer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,8 +16,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.SlotItemHandler;
+
+import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class LargeVesselCompartmentMenu extends AbstractContainerMenu implements ButtonHandlerContainer {
@@ -29,7 +29,7 @@ public class LargeVesselCompartmentMenu extends AbstractContainerMenu implements
         super(FirmacivMenus.LARGE_VESSEL_COMPARTMENT_MENU.get(), windowId);
         this.vesselCompartment = vesselCompartment;
 
-        this.vesselCompartment.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent((handler) -> {
+        java.util.Optional.ofNullable(this.vesselCompartment.getItemHandler(null)).ifPresent((handler) -> {
             this.addSlot(new SlotItemHandler(handler, 0, 62, 19));
             this.addSlot(new SlotItemHandler(handler, 1, 80, 19));
             this.addSlot(new SlotItemHandler(handler, 2, 98, 19));
@@ -73,7 +73,7 @@ public class LargeVesselCompartmentMenu extends AbstractContainerMenu implements
             }
 
             final @Nullable IHeat heat = HeatCapability.get(slotStack);
-            final int containerSlot = slotStack.getCapability(Capabilities.FLUID_ITEM)
+            final int containerSlot = java.util.Optional.ofNullable(slotStack.getCapability(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.ITEM))
                     .isPresent() && heat != null && heat.getTemperature() == 0 ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
 
             if (slotIndex < BarrelBlockEntity.SLOTS) {

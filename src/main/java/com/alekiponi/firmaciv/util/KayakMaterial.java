@@ -1,7 +1,7 @@
 package com.alekiponi.firmaciv.util;
 
 import com.alekiponi.alekiships.common.entity.vehicle.AbstractVehicle;
-import com.alekiponi.alekiships.util.BoatMaterial;
+import com.alekiponi.firmaciv.util.BoatMaterial;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -33,7 +33,7 @@ public enum KayakMaterial implements BoatMaterial {
     }
 
     @Override
-    public Optional<EntityType<? extends AbstractVehicle>> getEntityType(BoatType boatType) {
+    public Optional<EntityType<? extends net.minecraft.world.entity.Entity>> getEntityType(BoatType boatType) {
         return Optional.empty();
     }
 

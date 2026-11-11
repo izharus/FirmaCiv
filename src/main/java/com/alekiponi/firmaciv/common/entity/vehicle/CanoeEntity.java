@@ -4,8 +4,8 @@ import com.alekiponi.alekiships.common.entity.vehicle.AbstractAlekiBoatEntity;
 import com.alekiponi.alekiships.common.entity.vehiclecapability.IAllowFallDamage;
 import com.alekiponi.alekiships.common.entity.vehiclecapability.IHaveCleats;
 import com.alekiponi.alekiships.common.entity.vehiclecapability.IHaveColliders;
-import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.AbstractCompartmentEntity;
-import com.alekiponi.alekiships.util.BoatMaterial;
+import com.alekiponi.alekiships.common.entity.compartment.AbstractCompartmentEntity;
+import com.alekiponi.firmaciv.util.BoatMaterial;
 import com.alekiponi.firmaciv.common.item.FirmacivItems;
 import com.alekiponi.firmaciv.util.Helper;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +25,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
-public class CanoeEntity extends AbstractAlekiBoatEntity implements IHaveCleats, IHaveColliders, IAllowFallDamage {
+public class CanoeEntity extends FirmacivPaddledBoatEntity implements IHaveCleats, IHaveColliders, IAllowFallDamage {
     private static final EntityDataAccessor<Integer> DATA_ID_LENGTH = SynchedEntityData.defineId(CanoeEntity.class,
             EntityDataSerializers.INT);
     public final int PASSENGER_NUMBER = 5;
@@ -41,7 +41,7 @@ public class CanoeEntity extends AbstractAlekiBoatEntity implements IHaveCleats,
 
     public CanoeEntity(final EntityType<? extends CanoeEntity> entityType, final Level level,
                        final BoatMaterial boatMaterial) {
-        super(entityType, level, boatMaterial);
+        super(entityType, level, boatMaterial.getSerializedName());
 
 
     }
@@ -211,9 +211,13 @@ public class CanoeEntity extends AbstractAlekiBoatEntity implements IHaveCleats,
     }
 
     @Override
+    public net.minecraft.resources.ResourceKey<net.minecraft.world.level.storage.loot.LootTable> getLootTable() {
+        // Canoes have no hull salvage; do not inherit rowboat planks and metal oarlocks.
+        return net.minecraft.world.level.storage.loot.BuiltInLootTables.EMPTY;
+    }
+
     public Item getDropItem() {
-        // TODO make this not stupid
-        return super.getDropItem();
+        return FirmacivItems.CANOE_ICON_ONLY.get();
     }
 
     public void setLength(int length){
@@ -250,9 +254,9 @@ public class CanoeEntity extends AbstractAlekiBoatEntity implements IHaveCleats,
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_ID_LENGTH, 3);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ID_LENGTH, 3);
 
     }
 
@@ -273,7 +277,6 @@ public class CanoeEntity extends AbstractAlekiBoatEntity implements IHaveCleats,
         compoundTag.putInt("length", this.getLength());
     }
 
-    @Override
     public float getStepHeight(){
         return 0.0f;
     }

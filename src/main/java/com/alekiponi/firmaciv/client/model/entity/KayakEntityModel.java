@@ -14,7 +14,7 @@ import net.minecraft.world.entity.Entity;
 public class KayakEntityModel<T extends Entity> extends EntityModel<T> {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
-            new ResourceLocation(Firmaciv.MOD_ID, "kayak_entity"), "main");
+            ResourceLocation.fromNamespaceAndPath(Firmaciv.MOD_ID, "kayak_entity"), "main");
     private final ModelPart bow;
     private final ModelPart stern;
     private final ModelPart center;
@@ -184,11 +184,11 @@ public class KayakEntityModel<T extends Entity> extends EntityModel<T> {
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay,
-            float red, float green, float blue, float alpha) {
-        bow.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        stern.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        center.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        cockpit.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+            int color) {
+        bow.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        stern.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        center.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        cockpit.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

@@ -17,14 +17,14 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 import static com.alekiponi.firmaciv.common.block.CanoeComponentBlock.*;
 
-@Mod.EventBusSubscriber(modid = Firmaciv.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = Firmaciv.MOD_ID)
 public final class BlockEventHandler {
 
     private BlockEventHandler() {
@@ -49,7 +49,7 @@ public final class BlockEventHandler {
     @SubscribeEvent
     public static void registerToolModificationEvents(BlockEvent.BlockToolModificationEvent event) {
 
-        if (event.getToolAction() == ToolActions.AXE_STRIP && (event.getState()
+        if (event.getItemAbility() == ItemAbilities.AXE_STRIP && (event.getState()
                 .is(FirmacivTags.Blocks.CAN_MAKE_CANOE) || (!FirmacivConfig.SERVER.canoeWoodRestriction.get() && event.getState()
                 .is(FirmacivTags.Blocks.CAN_MAKE_CANOE_UNRESTRICTED))) && event.getPlayer() != null &&
                 event.getPlayer().getItemInHand(event.getPlayer().getUsedItemHand()).is(FirmacivTags.Items.SAWS)) {
@@ -58,7 +58,7 @@ public final class BlockEventHandler {
             }
         }
 
-        if (event.getToolAction() == ToolActions.AXE_STRIP && (event.getState()
+        if (event.getItemAbility() == ItemAbilities.AXE_STRIP && (event.getState()
                 .is(FirmacivTags.Blocks.CANOE_COMPONENT_BLOCKS))) {
             if (event.getState().getValue(BlockStateProperties.AXIS).isHorizontal()) {
                 processCanoeComponent(event);

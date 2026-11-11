@@ -42,7 +42,7 @@ public class FlatThatchRoofingBlock extends SlabBlock implements IForgeBlockExte
     //TODO implement swapping between stair and angled variants
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(final BlockState blockState, final Level level, final BlockPos blockPos,
+    public net.minecraft.world.ItemInteractionResult useItemOn(final ItemStack heldStack, final BlockState blockState, final Level level, final BlockPos blockPos,
                                  final Player player, final InteractionHand hand, final BlockHitResult hitResult) {
         ItemStack item = player.getItemInHand(player.getUsedItemHand());
         if(item.is(TFCItems.STRAW.get())){
@@ -52,10 +52,10 @@ public class FlatThatchRoofingBlock extends SlabBlock implements IForgeBlockExte
             BlockState state = blockState;
             level.destroyBlock(blockPos, false, player);
             level.setBlock(blockPos, FirmacivBlocks.THATCH_ROOFING_STAIRS.get().withPropertiesOf(state), 2);
-            return InteractionResult.SUCCESS;
+            return net.minecraft.world.ItemInteractionResult.SUCCESS;
         }
 
-        return InteractionResult.PASS;
+        return net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
 

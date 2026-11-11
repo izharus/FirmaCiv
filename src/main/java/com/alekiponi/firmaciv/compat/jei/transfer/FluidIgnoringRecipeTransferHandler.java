@@ -1,6 +1,6 @@
 package com.alekiponi.firmaciv.compat.jei.transfer;
 
-import mezz.jei.api.forge.ForgeTypes;
+import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.RecipeType;
@@ -54,7 +54,7 @@ public class FluidIgnoringRecipeTransferHandler<C extends AbstractContainerMenu,
     public IRecipeTransferError transferRecipe(final C container, final R recipe, final IRecipeSlotsView recipeSlots,
             final Player player, final boolean maxTransfer, final boolean doTransfer) {
         List<IRecipeSlotView> slotViews = recipeSlots.getSlotViews().stream()
-                .filter(iRecipeSlotView -> iRecipeSlotView.getIngredients(ForgeTypes.FLUID_STACK).findAny().isEmpty())
+                .filter(iRecipeSlotView -> iRecipeSlotView.getIngredients(NeoForgeTypes.FLUID_STACK).findAny().isEmpty())
                 .toList();
         return this.wrappedTransferHandler.transferRecipe(container, recipe,
                 this.transferHelper.createRecipeSlotsView(slotViews), player, maxTransfer, doTransfer);

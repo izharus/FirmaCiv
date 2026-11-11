@@ -1,254 +1,75 @@
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        maven { url = 'https://repo.spongepowered.org/maven' }
-        maven {
-            url "https://repo.spongepowered.org/repository/maven-public/"
-            content { includeGroup "org.spongepowered" }
-        }
-        mavenCentral()
-
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-
-    }
-}
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 plugins {
-    id "idea"
-    id 'eclipse'
-    id 'maven-publish'
-    //id 'org.parchmentmc.librarian.forgegradle'
+    id 'java'
+    id 'idea'
+    id 'net.neoforged.moddev' version '2.0.107'
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'org.spongepowered.mixin'
+group = 'com.alekiponi'
+version = modVersion
+base.archivesName = "FirmaCivilization-${minecraftVersion}"
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-base {
-    archivesName.set("FirmaCivilization-$minecraftVersion")
-    group = "com.alekiponi" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-    version = modVersion
-}
-
-// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
-
-minecraft {
-    mappings channel: mappingsChannel, version: mappingsVersion
-
-    accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
-
+neoForge {
+    version = neoForgeVersion
+    parchment {
+        minecraftVersion = '1.21.1'
+        mappingsVersion = '2024.11.17'
+    }
     runs {
         client {
-            workingDirectory file("run/client")
-
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            property 'forge.enabledGameTestNamespaces', 'firmaciv'
-
-            arg "-mixin.config=firmaciv.mixins.json"
-
-            mods {
-                firmaciv {
-                    source sourceSets.main
-                }
-            }
+            client()
+            gameDirectory = file('run/client')
         }
-
         server {
-            workingDirectory file("run/server")
-
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            property 'forge.enabledGameTestNamespaces', 'firmaciv'
-
-            arg "-mixin.config=firmaciv.mixins.json"
-
-            mods {
-                firmaciv {
-                    source sourceSets.main
-                }
-            }
+            server()
+            gameDirectory = file('run/server')
+            programArgument '--nogui'
         }
-
-        gameTestServer {
-
-            workingDirectory project.file('run')
-
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            property 'forge.enabledGameTestNamespaces', 'firmaciv'
-
-            arg "-mixin.config=firmaciv.mixins.json"
-
-            mods {
-                firmaciv {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-
-            //property 'forge.logging.markers', 'SCAN'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'firmaciv', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            arg "-mixin.config=firmaciv.mixins.json"
-
-            mods {
-                firmaciv {
-                    source sourceSets.main
-                }
-            }
+    }
+    mods {
+        firmaciv {
+            sourceSet sourceSets.main
         }
     }
 }
 
-// Include resources generated by data generators.
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
 repositories {
-    mavenLocal()
-    maven {
-        // tfc
-        url = 'https://www.cursemaven.com'
-        content {
-            includeGroup "curse.maven"
-        }
+    mavenCentral()
+    maven { url = 'https://maven.blamejared.com' }
+    maven { url = 'https://www.cursemaven.com'; content { includeGroup 'curse.maven' } }
+    ivy {
+        url = 'https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases/download'
+        patternLayout { artifact 'v[revision]/TerraFirmaCraft-NeoForge-1.21.1-[revision].[ext]' }
+        metadataSources { artifact() }
+        content { includeModule 'net.dries007.tfc', 'TerraFirmaCraft' }
     }
-    maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
-    maven { url = "https://modmaven.k-4u.nl" } // Mirror for JEI
-    maven { url = 'https://jitpack.io' } // Mixin Extras
-    maven { // Patchouli & Carryon
-        name = "BlameJared"
-        url = "https://maven.blamejared.com"
-    }
+}
+
+def shipsJar = file(providers.gradleProperty('alekiShipsJar').getOrElse("../alekiships/build/libs/aleki's Nifty Ships-mc1.21.1-2.0.0.jar"))
+if (!shipsJar.isFile()) {
+    throw new GradleException("Build AlekiShips 2.0.0 for 1.21.1 or pass -PalekiShipsJar=/path/to/alekiships.jar")
 }
 
 dependencies {
-    //noinspection VulnerableLibrariesLocal  we can't do anything about these so make it shut up
-    minecraft("net.minecraftforge:forge:$minecraftVersion-$forgeVersion")
-
-    // Mixin
-    annotationProcessor "org.spongepowered:mixin:$mixinVersion:processor"
-
-    // TFC
-    implementation fg.deobf("curse.maven:terrafirmacraft-302973:$tfcFileID")
-
-    // Patchouli
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$minecraftVersion-$patchouliVersion-FORGE")
-
-    // Carryon
-    runtimeOnly fg.deobf("tschipp.carryon:carryon-forge-$minecraftVersion:$carryonVersion")
-    // Carryon needs mixin extras at runtime
-    runtimeOnly "io.github.llamalad7:mixinextras-common:$mixinextrasVersion"
-    runtimeOnly "io.github.llamalad7:mixinextras-forge:$mixinextrasVersion"
-
-    // Jade / The One Probe
-    compileOnly fg.deobf("curse.maven:jade-324717:$jadeFileID")
-    compileOnly fg.deobf("curse.maven:top-245211:$topFleID")
-
-    // Only use Jade at runtime
-    runtimeOnly fg.deobf("curse.maven:jade-324717:$jadeFileID")
-
-    // JEI
-    compileOnly fg.deobf("mezz.jei:jei-$minecraftVersion-forge-api:$jeiVersion")
-    compileOnly fg.deobf("mezz.jei:jei-$minecraftVersion-common-api:$jeiVersion")
-    runtimeOnly fg.deobf("mezz.jei:jei-$minecraftVersion-forge:$jeiVersion")
-
-    // AlekiShips
-    implementation fg.deobf("curse.maven:alekiships-1068445:5669604")
-    /*implementation(jarJar(fg.deobf("com.alekiponi:alekiNiftyShips-FORGE-$minecraftVersion:$alekiShipsVersion"))) {
-        jarJar.ranged(it as Dependency, "[$alekiShipsVersion,)")
-    }*/
-
-    //AlekiRoofs
-    //implementation fg.deobf("curse.maven:alekis-ridiculously-simple-roofs-1010046:5310531")
-    implementation (jarJar(fg.deobf("curse.maven:alekis-ridiculously-simple-roofs-1010046:5310531"))) {
-        jarJar.ranged(it as Dependency, "[1.0,)")
-    }
+    implementation "net.dries007.tfc:TerraFirmaCraft:${tfcVersion}@jar"
+    implementation files(shipsJar)
+    runtimeOnly 'vazkii.patchouli:Patchouli:1.21.1-92-NEOFORGE'
+    compileOnly 'mezz.jei:jei-1.21.1-neoforge-api:19.25.0.321'
+    compileOnly 'mezz.jei:jei-1.21.1-common-api:19.25.0.321'
+    runtimeOnly 'mezz.jei:jei-1.21.1-neoforge:19.25.0.321'
+    implementation 'curse.maven:jade-324717:5591256'
 }
 
-mixin {
-    // MixinGradle Settings
-    add sourceSets.main, 'firmaciv.refmap.json'
+sourceSets.main.resources.srcDir 'src/generated/resources'
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('META-INF/neoforge.mods.toml') { expand(version: project.version) }
 }
-
-// Example for how to get properties into the manifest for reading at runtime.
-jar {
-    manifest {
-        attributes(["Specification-Title"     : "firmaciv",
-                    "Specification-Vendor"    : "alekiponi",
-                    "Specification-Version"   : "1", // We are version 1 of ourselves
-                    "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : project.jar.archiveVersion,
-                    "Implementation-Vendor"   : "alekiponi",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                    "TweakClaass"             : "org.spongepowered.asm.launch.MixinTweaker",
-                    "TweakOrder"              : 0,
-                    "MixinConfigs"            : "firmaciv.mixins.json"])
-    }
-}
-
-idea {
-    module {
-        excludeDirs.add(file("run"))
-        downloadJavadoc = true
-        downloadSources = true
-    }
-}
-
-// Example configuration to allow publishing using the maven-publish plugin
-// This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar')
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-// publish.dependsOn('reobfJar')
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file://${project.projectDir}/mcmodsrepo"
-        }
-    }
-}
-
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xmaxerrs', '1000']
+}
+
+tasks.named('jar') {
+    from(files('LICENSE.txt', 'THIRD_PARTY_NOTICES.md')) { into 'META-INF' }
 }

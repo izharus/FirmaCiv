@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class VesselCompartmentSealButton extends Button {
 
@@ -25,7 +25,7 @@ public class VesselCompartmentSealButton extends Button {
     }
 
     public void onPress() {
-        PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(0, null));
+        PacketDistributor.sendToServer(new ScreenButtonPacket(0, java.util.Optional.empty()));
         this.playDownSound(Minecraft.getInstance().getSoundManager());
     }
 

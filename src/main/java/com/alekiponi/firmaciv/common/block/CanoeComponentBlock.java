@@ -36,6 +36,13 @@ import java.util.stream.Stream;
 
 
 public class CanoeComponentBlock extends BaseEntityBlock {
+    @Override protected com.mojang.serialization.MapCodec<CanoeComponentBlock> codec() {
+        return com.mojang.serialization.codecs.RecordCodecBuilder.mapCodec(instance -> instance.group(
+            propertiesCodec(), net.minecraft.util.StringRepresentable.fromEnum(com.alekiponi.firmaciv.util.TFCWood::values).fieldOf("wood")
+                .forGetter(block -> (com.alekiponi.firmaciv.util.TFCWood) block.TFCWoodMaterial))
+            .apply(instance, CanoeComponentBlock::new));
+    }
+
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;

@@ -17,13 +17,13 @@ public final class FirmacivTags {
         public static final TagKey<Block> CAN_MAKE_CANOE_UNRESTRICTED = create("can_make_canoe_unrestricted");
 
         private static TagKey<Block> create(String id) {
-            return TagKey.create(Registries.BLOCK, new ResourceLocation("firmaciv", id));
+            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("firmaciv", id));
         }
     }
 
     public static class Items {
-        public static final TagKey<Item> SAWS = getFromTFC("saws");
-        public static final TagKey<Item> AXES = getFromTFC("axes");
+        public static final TagKey<Item> SAWS = net.dries007.tfc.common.TFCTags.Items.TOOLS_SAW;
+        public static final TagKey<Item> AXES = net.minecraft.tags.ItemTags.AXES;
 
         public static final TagKey<Item> CHESTS = create("chests");
 
@@ -41,11 +41,11 @@ public final class FirmacivTags {
         public static final TagKey<Item> BARRELS = getFromTFC("barrels");
 
         public static TagKey<Item> getFromTFC(String id) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation("tfc", id));
+            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("tfc", id));
         }
 
         public static TagKey<Item> create(String id) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation("firmaciv", id));
+            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("firmaciv", id));
         }
     }
 }

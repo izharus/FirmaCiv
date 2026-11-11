@@ -9,7 +9,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 public final class FirmacivInteractionManager {
 
     public static void init() {
-        InteractionManager.register(Ingredient.of(ItemTags.BOATS), true, ((stack, context) -> {
+        InteractionManager.register(Ingredient.of(ItemTags.BOATS), InteractionManager.Target.BOTH, ((stack, context) -> {
             if (FirmacivConfig.SERVER.disableVanillaBoatFunctionality.get()) {
                 return InteractionResult.FAIL;
             }

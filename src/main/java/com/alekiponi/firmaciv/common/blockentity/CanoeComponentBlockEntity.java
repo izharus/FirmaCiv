@@ -45,7 +45,7 @@ public class CanoeComponentBlockEntity extends TFCBlockEntity {
 
         this.isLit = true;
         this.litTick = Calendars.SERVER.getTicks();
-        this.markForBlockUpdate();
+        this.setChanged();
         BlockState newState = this.getBlockState().setValue(CANOE_CARVED, 12);
         level.setBlock(this.getBlockPos(), newState, 4);
 
@@ -69,16 +69,16 @@ public class CanoeComponentBlockEntity extends TFCBlockEntity {
         }
     }
 
-    public void loadAdditional(CompoundTag nbt) {
+    public void loadAdditional(CompoundTag nbt, net.minecraft.core.HolderLookup.Provider registries) {
         this.isLit = nbt.getBoolean("isLit");
         this.litTick = nbt.getLong("litTick");
-        super.loadAdditional(nbt);
+        super.loadAdditional(nbt, registries);
     }
 
-    public void saveAdditional(CompoundTag nbt) {
+    public void saveAdditional(CompoundTag nbt, net.minecraft.core.HolderLookup.Provider registries) {
         nbt.putBoolean("isLit", this.isLit);
         nbt.putLong("litTick", this.litTick);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, registries);
     }
 
     public long getTicksLeft() {

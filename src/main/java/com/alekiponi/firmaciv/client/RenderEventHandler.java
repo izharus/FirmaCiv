@@ -17,14 +17,14 @@ import com.alekiponi.firmaciv.common.entity.FirmacivEntities;
 import com.alekiponi.firmaciv.util.TFCWood;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 import static com.alekiponi.firmaciv.Firmaciv.MOD_ID;
 
-@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
 public final class RenderEventHandler {
 
     @SubscribeEvent
@@ -36,25 +36,12 @@ public final class RenderEventHandler {
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         for (final TFCWood tfcWood : TFCWood.values()) {
-            // Rowboat
-            event.registerEntityRenderer(FirmacivEntities.TFC_ROWBOATS.get(tfcWood).get(),
-                    context -> new RowboatRenderer(context, new ResourceLocation(MOD_ID,
-                            "textures/entity/watercraft/rowboat/" + tfcWood.getSerializedName()),
-                            CommonHelper.mapOfKeys(DyeColor.class, dyeColor -> new ResourceLocation(MOD_ID,
-                                    "textures/entity/watercraft/rowboat/" + tfcWood.getSerializedName() + "/" + dyeColor.getSerializedName()))));
-            // Sloops
-            event.registerEntityRenderer(FirmacivEntities.TFC_SLOOPS.get(tfcWood).get(),
-                    context -> new SloopRenderer(context, new ResourceLocation(MOD_ID,
-                            "textures/entity/watercraft/sloop/" + tfcWood.getSerializedName()),
-                            CommonHelper.mapOfKeys(DyeColor.class, dyeColor -> new ResourceLocation(MOD_ID,
-                                    "textures/entity/watercraft/sloop/" + tfcWood.getSerializedName() + "/" + dyeColor.getSerializedName()))));
-            // Construction sloops
-            event.registerEntityRenderer(FirmacivEntities.TFC_SLOOPS_UNDER_CONSTRUCTION.get(tfcWood).get(),
-                    context -> new SloopConstructionRenderer(context, new ResourceLocation(MOD_ID,
-                            "textures/entity/watercraft/sloop_construction/" + tfcWood.getSerializedName() + ".png")));
+            event.registerEntityRenderer(FirmacivEntities.TFC_ROWBOATS.get(tfcWood).get(), RowboatRenderer::new);
+            event.registerEntityRenderer(FirmacivEntities.TFC_SLOOPS.get(tfcWood).get(), SloopRenderer::new);
+            event.registerEntityRenderer(FirmacivEntities.TFC_SLOOPS_UNDER_CONSTRUCTION.get(tfcWood).get(), SloopConstructionRenderer::new);
             // Canoes
             event.registerEntityRenderer(FirmacivEntities.TFC_CANOES.get(tfcWood).get(),
-                    context -> new CanoeRenderer(context, new ResourceLocation(MOD_ID,
+                    context -> new CanoeRenderer(context, ResourceLocation.fromNamespaceAndPath(MOD_ID,
                             "textures/entity/watercraft/dugout_canoe/" + tfcWood.getSerializedName() + ".png")));
         }
 

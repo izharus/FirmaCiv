@@ -34,6 +34,6 @@ public class JEIIntegration implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(Firmaciv.MOD_ID, "jei");
+        return ResourceLocation.fromNamespaceAndPath(Firmaciv.MOD_ID, "jei");
     }
 }

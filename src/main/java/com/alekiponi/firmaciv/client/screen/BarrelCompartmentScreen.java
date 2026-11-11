@@ -8,11 +8,11 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.BarrelScreen;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
-import net.dries007.tfc.common.capabilities.Capabilities;
+
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Tooltips;
+import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.minecraft.client.gui.GuiGraphics;
@@ -22,9 +22,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 @OnlyIn(Dist.CLIENT)
 public class BarrelCompartmentScreen extends AbstractContainerScreen<BarrelCompartmentMenu> {
@@ -52,7 +52,7 @@ public class BarrelCompartmentScreen extends AbstractContainerScreen<BarrelCompa
 
     @Override
     public void render(final GuiGraphics poseStack, final int mouseX, final int mouseY, final float partialTicks) {
-        this.renderBackground(poseStack);
+        this.renderBackground(poseStack, mouseX, mouseY, partialTicks);
         super.render(poseStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(poseStack, mouseX, mouseY);
     }
@@ -64,7 +64,7 @@ public class BarrelCompartmentScreen extends AbstractContainerScreen<BarrelCompa
         final int relY = mouseY - this.topPos;
 
         if (relX >= 7 && relY >= 19 && relX < 25 && relY < 71) {
-            this.barrelCompartment.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
+            java.util.Optional.ofNullable(this.barrelCompartment.getFluidHandler(null)).ifPresent(fluidHandler -> {
                 final FluidStack fluid = fluidHandler.getFluidInTank(0);
                 if (!fluid.isEmpty()) {
                     graphics.renderTooltip(font, Tooltips.fluidUnitsOf(fluid), mouseX, mouseY);
@@ -82,7 +82,7 @@ public class BarrelCompartmentScreen extends AbstractContainerScreen<BarrelCompa
             // Draw the text displaying both the seal date, and the recipe name
             final BarrelRecipe recipe = this.barrelCompartment.getRecipe();
             if (recipe != null) {
-                final FormattedText resultText = recipe.getTranslationComponent();
+                final FormattedText resultText = barrelCompartment.getRecipeTooltip();
                 if (this.font.width(resultText) > MAX_RECIPE_NAME_LENGTH) {
                     int line = 0;
                     for (final FormattedCharSequence text : this.font.split(resultText, MAX_RECIPE_NAME_LENGTH)) {
@@ -97,9 +97,7 @@ public class BarrelCompartmentScreen extends AbstractContainerScreen<BarrelCompa
                             false);
                 }
             }
-            final String date = ICalendar.getTimeAndDate(
-                    Calendars.CLIENT.ticksToCalendarTicks(this.barrelCompartment.getSealedTick()),
-                    Calendars.CLIENT.getCalendarDaysInMonth()).getString();
+            final String date = Calendars.CLIENT.getExactTimeAndDate(this.barrelCompartment.getSealedTick()).getString();
             graphics.drawString(this.font, date, this.imageWidth / 2 - this.font.width(date) / 2, 74, TEXT_COLOR,
                     false);
         }
@@ -109,11 +107,11 @@ public class BarrelCompartmentScreen extends AbstractContainerScreen<BarrelCompa
     protected void renderBg(final GuiGraphics graphics, final float partialTicks, final int mouseX, final int mouseY) {
         this.drawDefaultBackground(graphics);
 
-        if (Helpers.isJEIEnabled()) {
+        if (net.neoforged.fml.ModList.get().isLoaded("jei")) {
             graphics.blit(BarrelScreen.BACKGROUND, getGuiLeft() + 92, getGuiTop() + 21, 227, 0, 9, 14);
         }
 
-        this.barrelCompartment.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
+        java.util.Optional.ofNullable(this.barrelCompartment.getFluidHandler(null)).ifPresent(fluidHandler -> {
             final FluidStack fluidStack = fluidHandler.getFluidInTank(0);
             if (!fluidStack.isEmpty()) {
                 final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluidStack);
@@ -139,7 +137,7 @@ public class BarrelCompartmentScreen extends AbstractContainerScreen<BarrelCompa
     }
 
     public void drawDisabled(final GuiGraphics graphics, final int start, final int end) {
-        this.barrelCompartment.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
+        java.util.Optional.ofNullable(this.barrelCompartment.getItemHandler(null)).ifPresent(inventory -> {
             // draw disabled texture over the slots
             this.menu.slots.stream().filter(slot -> slot.index <= end && slot.index >= start)
                     .forEach(slot -> renderSlotHighlight(graphics, slot.x, slot.y, 1));

@@ -1,7 +1,7 @@
 package com.alekiponi.firmaciv.util;
 
 import com.alekiponi.alekiships.common.entity.vehicle.AbstractVehicle;
-import com.alekiponi.alekiships.util.BoatMaterial;
+import com.alekiponi.firmaciv.util.BoatMaterial;
 import com.alekiponi.firmaciv.common.block.CanoeComponentBlock;
 import com.alekiponi.firmaciv.common.block.FirmacivBlocks;
 import com.alekiponi.firmaciv.common.entity.FirmacivEntities;
@@ -88,7 +88,7 @@ public enum TFCWood implements CanoeMaterial, BoatMaterial {
     }
 
     @Override
-    public Optional<EntityType<? extends AbstractVehicle>> getEntityType(final BoatType boatType) {
+    public Optional<EntityType<? extends net.minecraft.world.entity.Entity>> getEntityType(final BoatType boatType) {
         return switch (boatType) {
             case ROWBOAT -> Optional.of(FirmacivEntities.TFC_ROWBOATS.get(this).get());
             case SLOOP -> Optional.of(FirmacivEntities.TFC_SLOOPS.get(this).get());

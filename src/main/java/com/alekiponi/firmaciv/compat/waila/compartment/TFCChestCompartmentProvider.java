@@ -1,6 +1,6 @@
 package com.alekiponi.firmaciv.compat.waila.compartment;
 
-import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.BlockCompartment;
+import com.alekiponi.alekiships.common.entity.compartment.BlockCompartment;
 import com.alekiponi.alekiships.compat.waila.compartment.BlockCompartmentProvider;
 import com.alekiponi.firmaciv.Firmaciv;
 import com.alekiponi.firmaciv.common.entity.compartment.TFCChestCompartmentEntity;
@@ -18,19 +18,19 @@ import snownee.jade.api.config.IWailaConfig;
 public enum TFCChestCompartmentProvider implements IEntityComponentProvider {
     INSTANCE;
 
-    private static final ResourceLocation NAME = new ResourceLocation(Firmaciv.MOD_ID, "tfc_chest");
+    private static final ResourceLocation NAME = ResourceLocation.fromNamespaceAndPath(Firmaciv.MOD_ID, "tfc_chest");
 
     @Override
     public void appendTooltip(final ITooltip tooltip, final EntityAccessor entityAccessor,
             final IPluginConfig iPluginConfig) {
-        tooltip.remove(Identifiers.CORE_OBJECT_NAME);
+        tooltip.remove(JadeIds.CORE_OBJECT_NAME);
 
         final String blockName = I18n.get(((TFCChestCompartmentEntity) entityAccessor.getEntity()).descriptionId());
 
         // "<BlockName> Compartment"
         final MutableComponent name = Component.translatable("alekiships.jade.compartment_block", blockName);
         final IWailaConfig.IConfigFormatting formatting = IWailaConfig.get().getFormatting();
-        tooltip.add(0, formatting.title(name), Identifiers.CORE_OBJECT_NAME);
+        tooltip.add(0, snownee.jade.api.theme.IThemeHelper.get().title(name), JadeIds.CORE_OBJECT_NAME);
     }
 
     @Override

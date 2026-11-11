@@ -2,15 +2,13 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.alekiponi.firmaciv.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
     "FlowingFluidMixin",
     "FluidHelpersMixin"
   ],
-  "client": [
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
-  },
-  "refmap": "firmaciv.refmap.json"
+  }
 }

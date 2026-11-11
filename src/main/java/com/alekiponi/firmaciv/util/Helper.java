@@ -1,7 +1,7 @@
 package com.alekiponi.firmaciv.util;
 
 import com.alekiponi.alekiships.common.entity.vehicle.AbstractAlekiBoatEntity;
-import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.EmptyCompartmentEntity;
+import com.alekiponi.alekiships.common.entity.compartment.EmptyCompartmentEntity;
 import com.alekiponi.firmaciv.events.config.FirmacivConfig;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.minecraft.core.BlockPos;
@@ -35,7 +35,7 @@ public class Helper {
                 BlockState blockstate = pLevel.getBlockState(blockpos);
                 FluidState fluidstate = blockstate.getFluidState();
                 if (fluidstate.getType().isSame(self) && ((FlowingFluidAccessor)self).invoke$canPassThroughWall(direction, pLevel, pPos, pBlockState, blockpos, blockstate)) {
-                    if (fluidstate.isSource() && net.minecraftforge.event.ForgeEventFactory.canCreateFluidSource(pLevel, blockpos, blockstate, fluidstate.canConvertToSource(pLevel, blockpos))) {
+                    if (fluidstate.isSource() && net.neoforged.neoforge.event.EventHooks.canCreateFluidSource(pLevel, blockpos, blockstate)) {
                         Direction cw = direction.getClockWise();
                         Direction ccw = direction.getCounterClockWise();
                         BlockPos blockpos1 = blockpos.relative(cw);
@@ -45,7 +45,7 @@ public class Helper {
                         FluidState fluidstate1 = blockstate1.getFluidState();
                         FluidState fluidstate2 = blockstate2.getFluidState();
                         if (fluidstate1.getType().isSame((FlowingFluid) (Object) self) && ((FlowingFluidAccessor)self).invoke$canPassThroughWall(cw, pLevel, pPos, pBlockState, blockpos1, blockstate1)) {
-                            if (fluidstate1.isSource() && net.minecraftforge.event.ForgeEventFactory.canCreateFluidSource(pLevel, blockpos1, blockstate1, fluidstate1.canConvertToSource(pLevel, blockpos1))) {
+                            if (fluidstate1.isSource() && net.neoforged.neoforge.event.EventHooks.canCreateFluidSource(pLevel, blockpos1, blockstate1)) {
                                 BlockState blockstate3 = pLevel.getBlockState(pPos.below());
                                 FluidState fluidstate3 = blockstate1.getFluidState();
                                 if (blockstate3.isSolid() || fluidstate3.getType().isSame((Fluid)(Object)self)) {
@@ -55,7 +55,7 @@ public class Helper {
                                 }
                             }
                         } else if (fluidstate2.getType().isSame((FlowingFluid) (Object) self) && ((FlowingFluidAccessor)self).invoke$canPassThroughWall(cw, pLevel, pPos, pBlockState, blockpos2, blockstate2)) {
-                            if (fluidstate2.isSource() && net.minecraftforge.event.ForgeEventFactory.canCreateFluidSource(pLevel, blockpos2, blockstate2, fluidstate2.canConvertToSource(pLevel, blockpos2))) {
+                            if (fluidstate2.isSource() && net.neoforged.neoforge.event.EventHooks.canCreateFluidSource(pLevel, blockpos2, blockstate2)) {
                                 BlockState blockstate3 = pLevel.getBlockState(pPos.below());
                                 FluidState fluidstate3 = blockstate1.getFluidState();
                                 if (blockstate3.isSolid() || fluidstate3.getType().isSame((Fluid)(Object)self)) {

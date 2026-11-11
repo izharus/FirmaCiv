@@ -3,8 +3,8 @@ package com.alekiponi.firmaciv.common.block;
 import com.alekiponi.alekiships.common.block.AlekiShipsBlocks;
 import com.alekiponi.alekiships.common.block.AngledBoatFrameBlock;
 import com.alekiponi.alekiships.common.block.AngledWoodenBoatFrameBlock;
-import com.alekiponi.alekiships.common.block.ProcessedBoatFrame;
-import com.alekiponi.alekiships.util.BoatMaterial;
+
+import com.alekiponi.firmaciv.util.BoatMaterial;
 import com.alekiponi.alekiships.util.CommonHelper;
 import com.alekiponi.firmaciv.common.item.FirmacivItems;
 import net.dries007.tfc.common.TFCTags;
@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class FirmacivAngledWoodenBoatFrameBlock extends AngledBoatFrameBlock implements ProcessedBoatFrame {
+public class FirmacivAngledWoodenBoatFrameBlock extends AngledBoatFrameBlock {
     public static final IntegerProperty FRAME_PROCESSED = FirmacivBlockStateProperties.FRAME_PROCESSED_7;
     public static final int FULLY_PLANKED = 3;
     private static final int FULLY_PROCESSED = 7;
@@ -45,8 +45,7 @@ public class FirmacivAngledWoodenBoatFrameBlock extends AngledBoatFrameBlock imp
         builder.add(FACING, SHAPE, WATERLOGGED, FRAME_PROCESSED);
     }
 
-    @Override
-    public InteractionResult use(final BlockState blockState, final Level level, final BlockPos blockPos,
+    private InteractionResult interactFrame(final BlockState blockState, final Level level, final BlockPos blockPos,
                                  final Player player, final InteractionHand hand, final BlockHitResult hitResult) {
 
         if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
@@ -91,7 +90,7 @@ public class FirmacivAngledWoodenBoatFrameBlock extends AngledBoatFrameBlock imp
         }
 
         // Should we do bolt stuff
-        if (heldStack.is(FirmacivItems.COPPER_BOLT.get()) && player.getOffhandItem().is(TFCTags.Items.HAMMERS)) {
+        if (heldStack.is(FirmacivItems.COPPER_BOLT.get()) && player.getOffhandItem().is(TFCTags.Items.TOOLS_HAMMER)) {
             // Must be [3,7)
             if (FULLY_PLANKED <= processState && processState < FULLY_PROCESSED) {
                 if (!player.getAbilities().instabuild) {
@@ -101,7 +100,7 @@ public class FirmacivAngledWoodenBoatFrameBlock extends AngledBoatFrameBlock imp
                 level.playSound(null, blockPos, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 1.5F,
                         level.getRandom().nextFloat() * 0.1F + 0.9F);
                 if (processState + 1 == FULLY_PROCESSED) {
-                    AngledWoodenBoatFrameBlock.triggerDetection(level, blockPos);
+                    com.alekiponi.alekiships.common.recipe.EntityMultiblockRecipe.tryAssembleMultiblock(level, blockPos, player, true);
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide());
             }
@@ -113,24 +112,29 @@ public class FirmacivAngledWoodenBoatFrameBlock extends AngledBoatFrameBlock imp
 
     @Override
     @SuppressWarnings("deprecation")
-    public ItemStack getCloneItemStack(final BlockGetter blockGetter, final BlockPos blockPos,
+    public ItemStack getCloneItemStack(final net.minecraft.world.level.LevelReader blockGetter, final BlockPos blockPos,
                                        final BlockState blockState) {
         // We don't exist as an item so pass it the base version instead
         return FirmacivBlocks.BOAT_FRAME_ANGLED.get().getCloneItemStack(blockGetter, blockPos, blockState);
     }
 
-    @Override
     public IntegerProperty getProcessingProperty() {
         return FRAME_PROCESSED;
     }
 
-    @Override
     public int getProcessingLimit() {
         return FULLY_PROCESSED;
     }
 
-    @Override
     public BoatMaterial getBoatMaterial() {
         return boatMaterial;
+    }
+
+    @Override protected net.minecraft.world.ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (level.isClientSide) return net.minecraft.world.ItemInteractionResult.SUCCESS;
+        return net.minecraft.world.ItemInteractionResult.valueOf(interactFrame(state, level, pos, player, hand, hit).name().replace("PASS", "PASS_TO_DEFAULT_BLOCK_INTERACTION"));
+    }
+    @Override protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        return level.isClientSide ? InteractionResult.SUCCESS : interactFrame(state, level, pos, player, InteractionHand.MAIN_HAND, hit);
     }
 }

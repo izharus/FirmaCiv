@@ -2,7 +2,7 @@ package com.alekiponi.firmaciv.common.entity.vehicle;
 
 import com.alekiponi.alekiships.common.entity.vehicle.AbstractAlekiBoatEntity;
 import com.alekiponi.alekiships.common.entity.vehiclecapability.IAllowFallDamage;
-import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.AbstractCompartmentEntity;
+import com.alekiponi.alekiships.common.entity.compartment.AbstractCompartmentEntity;
 import com.alekiponi.firmaciv.Firmaciv;
 import com.alekiponi.firmaciv.common.item.FirmacivItems;
 import com.alekiponi.firmaciv.util.Helper;
@@ -21,13 +21,13 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-import static net.minecraftforge.items.ItemHandlerHelper.giveItemToPlayer;
+import static net.neoforged.neoforge.items.ItemHandlerHelper.giveItemToPlayer;
 
-public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDamage {
+public class KayakEntity extends FirmacivPaddledBoatEntity implements IAllowFallDamage {
     public final int PASSENGER_NUMBER = 1;
     protected final float DAMAGE_THRESHOLD = 10.0f;
     protected final float DAMAGE_RECOVERY = 1.0f;
@@ -35,8 +35,8 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
     protected final float PASSENGER_SIZE_LIMIT = 0.6F;
     protected final float HUNGER_FACTOR = 0.02F;
 
-    public KayakEntity(final EntityType<? extends AbstractAlekiBoatEntity> entityType, final Level level) {
-        super(entityType, level, KayakMaterial.KAYAK);
+    public KayakEntity(final EntityType<? extends KayakEntity> entityType, final Level level) {
+        super(entityType, level, "kayak");
     }
 
     @Override
@@ -171,7 +171,6 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
         return 0.000f;
     }
 
-    @Override
     public Item getDropItem() {
         return FirmacivItems.KAYAK.get();
     }
@@ -181,7 +180,6 @@ public class KayakEntity extends AbstractAlekiBoatEntity implements IAllowFallDa
         return new ItemStack(FirmacivItems.KAYAK.get());
     }
 
-    @Override
     public float getStepHeight() {
         return 0.6f;
     }

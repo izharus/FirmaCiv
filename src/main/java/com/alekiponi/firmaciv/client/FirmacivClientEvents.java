@@ -1,8 +1,8 @@
 package com.alekiponi.firmaciv.client;
 
 import com.alekiponi.alekiships.AlekiShips;
-import com.alekiponi.alekiships.client.resources.PaintedTextureGenerator;
-import com.alekiponi.alekiships.common.entity.vehiclehelper.compartment.EmptyCompartmentEntity;
+
+import com.alekiponi.alekiships.common.entity.compartment.EmptyCompartmentEntity;
 import com.alekiponi.firmaciv.Firmaciv;
 import com.alekiponi.firmaciv.client.screen.BarrelCompartmentScreen;
 import com.alekiponi.firmaciv.client.screen.LargeVesselCompartmentScreen;
@@ -22,28 +22,28 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+
 
 import javax.annotation.Nullable;
 
 public final class FirmacivClientEvents {
 
-    public static void init() {
-        final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    public static void init(IEventBus bus) {
 
         bus.addListener(FirmacivClientEvents::clientSetup);
-        bus.addListener(FirmacivClientEvents::onRegisterReloadListeners);
+        bus.addListener((net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) -> {
+            event.register(FirmacivMenus.BARREL_COMPARTMENT_MENU.get(), BarrelCompartmentScreen::new);
+            event.register(FirmacivMenus.LARGE_VESSEL_COMPARTMENT_MENU.get(), LargeVesselCompartmentScreen::new);
+        });
     }
 
     private static void clientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            MenuScreens.register(FirmacivMenus.BARREL_COMPARTMENT_MENU.get(), BarrelCompartmentScreen::new);
-            MenuScreens.register(FirmacivMenus.LARGE_VESSEL_COMPARTMENT_MENU.get(), LargeVesselCompartmentScreen::new);
 
-            ItemProperties.register(FirmacivItems.BAROMETER.get(), new ResourceLocation(Firmaciv.MOD_ID, "altitude"),
+            ItemProperties.register(FirmacivItems.BAROMETER.get(), ResourceLocation.fromNamespaceAndPath(Firmaciv.MOD_ID, "altitude"),
                     new ClampedItemPropertyFunction() {
 
                         public float unclampedCall(ItemStack pStack, @Nullable ClientLevel pLevel,
@@ -76,7 +76,7 @@ public final class FirmacivClientEvents {
 
 
             ItemProperties.register(FirmacivItems.FIRMACIV_COMPASS.get(),
-                    new ResourceLocation(Firmaciv.MOD_ID, "firmaciv_compass_direction"),
+                    ResourceLocation.fromNamespaceAndPath(Firmaciv.MOD_ID, "firmaciv_compass_direction"),
                     new ClampedItemPropertyFunction() {
 
                         public float unclampedCall(ItemStack pStack, @Nullable ClientLevel pLevel,
@@ -116,7 +116,7 @@ public final class FirmacivClientEvents {
                     });
 
 
-            ItemProperties.register(FirmacivItems.NAV_CLOCK.get(), new ResourceLocation(Firmaciv.MOD_ID, "pm_time"),
+            ItemProperties.register(FirmacivItems.NAV_CLOCK.get(), ResourceLocation.fromNamespaceAndPath(Firmaciv.MOD_ID, "pm_time"),
                     new ClampedItemPropertyFunction() {
                         private double rotation;
                         private double rota;
@@ -170,21 +170,4 @@ public final class FirmacivClientEvents {
         });
     }
 
-    private static void onRegisterReloadListeners(final RegisterClientReloadListenersEvent event) {
-        {
-            final ResourceLocation rowboatPaint = new ResourceLocation(AlekiShips.MOD_ID,
-                    "entity/watercraft/rowboat/paint");
-            final ResourceLocation sloopPaint = new ResourceLocation(AlekiShips.MOD_ID,
-                    "entity/watercraft/sloop/paint");
-
-            for (final TFCWood wood : TFCWood.values()) {
-                event.registerReloadListener(new PaintedTextureGenerator(
-                        new ResourceLocation(Firmaciv.MOD_ID, "entity/watercraft/rowboat/" + wood.getSerializedName()),
-                        rowboatPaint));
-                event.registerReloadListener(new PaintedTextureGenerator(
-                        new ResourceLocation(Firmaciv.MOD_ID, "entity/watercraft/sloop/" + wood.getSerializedName()),
-                        sloopPaint));
-            }
-        }
-    }
 }

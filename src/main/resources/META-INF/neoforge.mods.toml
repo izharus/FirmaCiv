@@ -1,10 +1,10 @@
 
 modLoader="javafml"
-loaderVersion="[40,)"
+loaderVersion="[4,)"
 license="MIT"
 [[mods]]
 modId="firmaciv"
-version="${file.jarVersion}"
+version="${version}"
 displayName="Firma: Civilization"
 logoFile="icon.png"
 authors="alekiponi"
@@ -14,11 +14,11 @@ Firma: Civilization is an addon/expansion for TerraFirmaCraft focusing on key, c
 
 '''
 [[dependencies.firmaciv]]
-    modId="forge" #mandatory
+    modId="neoforge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
-    mandatory=true #mandatory
+    type="required" #mandatory
     # The version range of the dependency
-    versionRange="[47.1.3,)" #mandatory
+    versionRange="[21.1.234,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -26,31 +26,26 @@ Firma: Civilization is an addon/expansion for TerraFirmaCraft focusing on key, c
 # Here's another dependency
 [[dependencies.firmaciv]]
     modId="minecraft"
-    mandatory=true
+    type="required"
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.20.1,1.21.0)"
+    versionRange="[1.21.1]"
     ordering="NONE"
     side="BOTH"
 
 
 [[dependencies.firmaciv]]
     modId="tfc"
-    mandatory=true
-    versionRange="[3.2.5,)"
+    type="required"
+    versionRange="[4.2.15,4.3)"
     ordering="AFTER"
     side="BOTH"
 
 [[dependencies.firmaciv]]
     modId = "alekiships"
-    mandatory = true
-    versionRange = "[1.0.10,)"
+    type = "required"
+    versionRange = "[2.0.0,3)"
     ordering = "AFTER"
     side = "BOTH"
 
-[[dependencies.firmaciv]]
-    modId = "alekiroofs"
-    mandatory = true
-    versionRange = "[1.0.1,)"
-    ordering = "AFTER"
-    side = "BOTH"
-
+[[mixins]]
+    config="firmaciv.mixins.json"

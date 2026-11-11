@@ -2,7 +2,7 @@ package com.alekiponi.firmaciv.common.entity.vehicle;
 
 import com.alekiponi.alekiships.common.entity.vehicle.RowboatEntity;
 import com.alekiponi.alekiships.common.entity.vehiclecapability.IAllowFallDamage;
-import com.alekiponi.alekiships.util.BoatMaterial;
+import com.alekiponi.firmaciv.util.BoatMaterial;
 import com.alekiponi.firmaciv.util.Helper;
 import net.dries007.tfc.util.climate.Climate;
 import net.minecraft.core.BlockPos;
@@ -16,7 +16,11 @@ public class FirmacivRowboatEntity extends RowboatEntity implements IAllowFallDa
 
     public FirmacivRowboatEntity(final EntityType<? extends FirmacivRowboatEntity> entityType, final Level level,
             final BoatMaterial boatMaterial) {
-        super(entityType, level, boatMaterial);
+        super(entityType, level);
+        this.windModel = com.alekiponi.firmaciv.util.TFCWindModel.INSTANCE;
+        this.setVariant(level.registryAccess().registryOrThrow(com.alekiponi.alekiships.common.AlekiShipsRegistries.ROWBOAT_VARIANT)
+            .getHolderOrThrow(net.minecraft.resources.ResourceKey.create(com.alekiponi.alekiships.common.AlekiShipsRegistries.ROWBOAT_VARIANT,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("firmaciv", boatMaterial.getSerializedName()))));
     }
 
     @Override
