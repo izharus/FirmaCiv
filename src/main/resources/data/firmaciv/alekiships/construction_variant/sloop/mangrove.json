@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:mangrove",
+  "loot_table": "firmaciv:entities/sloop_construction/mangrove",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.mangrove"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/mangrove"
+}

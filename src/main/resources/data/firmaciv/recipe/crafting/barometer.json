@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "firmaciv:unfinished_barometer"
+    },
+    {
+      "item": "tfc:brass_mechanisms"
+    },
+    {
+      "tag": "tfc:glass_bottles"
+    },
+    {
+      "type": "tfc:fluid_content",
+      "fluid": {
+        "amount": 100,
+        "fluid": "minecraft:water"
+      }
+    }
+  ],
+  "result": {
+    "id": "firmaciv:barometer"
+  }
+}

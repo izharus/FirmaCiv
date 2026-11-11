@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:blackwood",
+  "loot_table": "firmaciv:entities/sloop_construction/blackwood",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.blackwood"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/blackwood"
+}

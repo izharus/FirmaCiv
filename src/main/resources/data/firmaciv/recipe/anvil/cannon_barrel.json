@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "result": {
+    "id": "firmaciv:cannon_barrel"
+  },
+  "tier": 2,
+  "rules": [
+    "bend_last",
+    "bend_second_last",
+    "bend_third_last"
+  ],
+  "ingredient": {
+    "tag": "c:double_sheets/wrought_iron"
+  }
+}

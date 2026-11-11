@@ -1,0 +1,161 @@
+{
+  "type": "alekiships:entity_multiblock_recipe",
+  "entity": {
+    "type": "alekiships:simple",
+    "entity": "firmaciv:sloop_construction/sycamore"
+  },
+  "key": {
+    "1": {
+      "states": [
+        {
+          "facing": "west",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        },
+        {
+          "facing": "north",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/sycamore"
+    },
+    "2": {
+      "states": [
+        {
+          "facing": "west",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        },
+        {
+          "facing": "south",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/sycamore"
+    },
+    "3": {
+      "state": {
+        "facing": "north",
+        "frame_processed": "7",
+        "shape": "straight"
+      },
+      "values": "firmaciv:wood/watercraft_frame/angled/sycamore"
+    },
+    "4": {
+      "state": {
+        "facing": "south",
+        "frame_processed": "7",
+        "shape": "straight"
+      },
+      "values": "firmaciv:wood/watercraft_frame/angled/sycamore"
+    },
+    "5": {
+      "states": [
+        {
+          "facing": "west",
+          "frame_processed": "7",
+          "shape": "outer_right"
+        },
+        {
+          "facing": "north",
+          "frame_processed": "7",
+          "shape": "outer_left"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/sycamore"
+    },
+    "6": {
+      "states": [
+        {
+          "facing": "west",
+          "frame_processed": "7",
+          "shape": "outer_left"
+        },
+        {
+          "facing": "south",
+          "frame_processed": "7",
+          "shape": "outer_right"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/sycamore"
+    },
+    "7": {
+      "states": [
+        {
+          "facing": "east",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        },
+        {
+          "facing": "north",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/sycamore"
+    },
+    "8": {
+      "state": {
+        "facing": "east",
+        "frame_processed": "7",
+        "shape": "straight"
+      },
+      "values": "firmaciv:wood/watercraft_frame/angled/sycamore"
+    },
+    "9": {
+      "states": [
+        {
+          "facing": "east",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        },
+        {
+          "facing": "south",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/sycamore"
+    },
+    "F": {
+      "state": {
+        "frame_processed": "7"
+      },
+      "values": "firmaciv:wood/watercraft_frame/flat/sycamore"
+    },
+    "L": {
+      "state": {
+        "facing": "north"
+      },
+      "values": "alekiships:cleat"
+    },
+    "R": {
+      "state": {
+        "facing": "south"
+      },
+      "values": "alekiships:cleat"
+    }
+  },
+  "pattern": [
+    [
+      "    ",
+      "    ",
+      "L  R",
+      "    ",
+      "    ",
+      "    ",
+      "L  R"
+    ],
+    [
+      " 12 ",
+      " 34 ",
+      "1562",
+      "3FF4",
+      "3FF4",
+      "3FF4",
+      "7889"
+    ]
+  ]
+}

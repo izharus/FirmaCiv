@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:chestnut",
+  "loot_table": "firmaciv:entities/sloop_construction/chestnut",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.chestnut"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/chestnut"
+}

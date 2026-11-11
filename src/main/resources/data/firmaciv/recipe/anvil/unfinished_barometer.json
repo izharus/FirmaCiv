@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "result": {
+    "id": "firmaciv:unfinished_barometer"
+  },
+  "tier": 2,
+  "rules": [
+    "hit_last",
+    "draw_second_last",
+    "upset_third_last"
+  ],
+  "ingredient": {
+    "tag": "c:sheets/brass"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "result": {
+    "count": 4,
+    "id": "firmaciv:copper_bolt"
+  },
+  "tier": 2,
+  "rules": [
+    "hit_last",
+    "hit_second_last",
+    "hit_third_last"
+  ],
+  "ingredient": {
+    "tag": "c:ingots/copper"
+  }
+}

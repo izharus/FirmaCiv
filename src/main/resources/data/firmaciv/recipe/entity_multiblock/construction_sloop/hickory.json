@@ -1,0 +1,161 @@
+{
+  "type": "alekiships:entity_multiblock_recipe",
+  "entity": {
+    "type": "alekiships:simple",
+    "entity": "firmaciv:sloop_construction/hickory"
+  },
+  "key": {
+    "1": {
+      "states": [
+        {
+          "facing": "west",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        },
+        {
+          "facing": "north",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/hickory"
+    },
+    "2": {
+      "states": [
+        {
+          "facing": "west",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        },
+        {
+          "facing": "south",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/hickory"
+    },
+    "3": {
+      "state": {
+        "facing": "north",
+        "frame_processed": "7",
+        "shape": "straight"
+      },
+      "values": "firmaciv:wood/watercraft_frame/angled/hickory"
+    },
+    "4": {
+      "state": {
+        "facing": "south",
+        "frame_processed": "7",
+        "shape": "straight"
+      },
+      "values": "firmaciv:wood/watercraft_frame/angled/hickory"
+    },
+    "5": {
+      "states": [
+        {
+          "facing": "west",
+          "frame_processed": "7",
+          "shape": "outer_right"
+        },
+        {
+          "facing": "north",
+          "frame_processed": "7",
+          "shape": "outer_left"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/hickory"
+    },
+    "6": {
+      "states": [
+        {
+          "facing": "west",
+          "frame_processed": "7",
+          "shape": "outer_left"
+        },
+        {
+          "facing": "south",
+          "frame_processed": "7",
+          "shape": "outer_right"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/hickory"
+    },
+    "7": {
+      "states": [
+        {
+          "facing": "east",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        },
+        {
+          "facing": "north",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/hickory"
+    },
+    "8": {
+      "state": {
+        "facing": "east",
+        "frame_processed": "7",
+        "shape": "straight"
+      },
+      "values": "firmaciv:wood/watercraft_frame/angled/hickory"
+    },
+    "9": {
+      "states": [
+        {
+          "facing": "east",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        },
+        {
+          "facing": "south",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/hickory"
+    },
+    "F": {
+      "state": {
+        "frame_processed": "7"
+      },
+      "values": "firmaciv:wood/watercraft_frame/flat/hickory"
+    },
+    "L": {
+      "state": {
+        "facing": "north"
+      },
+      "values": "alekiships:cleat"
+    },
+    "R": {
+      "state": {
+        "facing": "south"
+      },
+      "values": "alekiships:cleat"
+    }
+  },
+  "pattern": [
+    [
+      "    ",
+      "    ",
+      "L  R",
+      "    ",
+      "    ",
+      "    ",
+      "L  R"
+    ],
+    [
+      " 12 ",
+      " 34 ",
+      "1562",
+      "3FF4",
+      "3FF4",
+      "3FF4",
+      "7889"
+    ]
+  ]
+}

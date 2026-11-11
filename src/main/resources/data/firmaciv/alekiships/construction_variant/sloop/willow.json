@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:willow",
+  "loot_table": "firmaciv:entities/sloop_construction/willow",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.willow"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/willow"
+}

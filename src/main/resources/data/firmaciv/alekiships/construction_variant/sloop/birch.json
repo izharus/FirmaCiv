@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:birch",
+  "loot_table": "firmaciv:entities/sloop_construction/birch",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.birch"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/birch"
+}

@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:acacia",
+  "loot_table": "firmaciv:entities/sloop_construction/acacia",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.acacia"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/acacia"
+}

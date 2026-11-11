@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:oak",
+  "loot_table": "firmaciv:entities/sloop_construction/oak",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.oak"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/oak"
+}

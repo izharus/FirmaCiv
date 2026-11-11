@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:hickory",
+  "loot_table": "firmaciv:entities/sloop_construction/hickory",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.hickory"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/hickory"
+}

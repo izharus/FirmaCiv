@@ -1,0 +1,145 @@
+{
+  "assemble_particle": {
+    "type": "alekiships:construction",
+    "texture": "tfc:block/wood/planks/rosewood"
+  },
+  "assemble_sound": "minecraft:block.wood.break",
+  "constructed_entity": {
+    "type": "alekiships:simple",
+    "entity": "firmaciv:sloop/rosewood"
+  },
+  "stages": {
+    "anchor": {
+      "input": {
+        "count": 1,
+        "item": "alekiships:anchor"
+      },
+      "progress_sound": "minecraft:block.metal.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wood.break"
+    },
+    "boom": {
+      "input": {
+        "count": 8,
+        "item": "tfc:wood/stripped_log/rosewood"
+      },
+      "progress_sound": "minecraft:block.wood.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wood.break"
+    },
+    "bow_railings": {
+      "input": {
+        "count": 8,
+        "item": "tfc:wood/lumber/rosewood"
+      },
+      "progress_sound": "minecraft:block.wood.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wood.break"
+    },
+    "bowsprit": {
+      "input": {
+        "count": 6,
+        "item": "tfc:wood/stripped_log/rosewood"
+      },
+      "progress_sound": "minecraft:block.wood.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wood.break"
+    },
+    "deck": {
+      "input": {
+        "count": 20,
+        "item": "tfc:wood/planks/rosewood"
+      },
+      "progress_sound": "minecraft:block.wood.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wood.break"
+    },
+    "jibsail": {
+      "input": {
+        "item": "firmaciv:small_triangular_sail",
+        "count": 1
+      },
+      "progress_sound": "minecraft:block.wool.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wool.break"
+    },
+    "keel": {
+      "input": {
+        "count": 8,
+        "item": "tfc:wood/stripped_log/rosewood"
+      },
+      "progress_sound": "minecraft:block.wood.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wood.break"
+    },
+    "mainsail": {
+      "input": {
+        "item": "firmaciv:medium_triangular_sail",
+        "count": 1
+      },
+      "progress_sound": "minecraft:block.wool.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wool.break"
+    },
+    "mast": {
+      "input": {
+        "count": 12,
+        "item": "tfc:wood/stripped_log/rosewood"
+      },
+      "progress_sound": "minecraft:block.wood.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wood.break"
+    },
+    "rigging": {
+      "input": {
+        "item": "firmaciv:rope_coil",
+        "count": 8
+      },
+      "progress_sound": "minecraft:entity.leash_knot.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wood.break"
+    },
+    "stern_railings": {
+      "input": {
+        "count": 8,
+        "item": "tfc:wood/lumber/rosewood"
+      },
+      "progress_sound": "minecraft:block.wood.place",
+      "switch_particle": {
+        "type": "alekiships:construction",
+        "texture": "tfc:block/wood/planks/rosewood"
+      },
+      "switch_sound": "minecraft:block.wood.break"
+    }
+  }
+}

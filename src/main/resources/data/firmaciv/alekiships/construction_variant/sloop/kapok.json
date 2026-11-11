@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:kapok",
+  "loot_table": "firmaciv:entities/sloop_construction/kapok",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.kapok"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/kapok"
+}

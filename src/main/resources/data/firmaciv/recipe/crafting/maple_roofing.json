@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  #",
+    " # ",
+    "#  "
+  ],
+  "key": {
+    "#": {
+      "item": "tfc:wood/planks/maple"
+    }
+  },
+  "result": {
+    "count": 6,
+    "id": "firmaciv:wood/maple_roofing"
+  }
+}

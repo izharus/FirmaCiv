@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:ash",
+  "loot_table": "firmaciv:entities/sloop_construction/ash",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.ash"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/ash"
+}

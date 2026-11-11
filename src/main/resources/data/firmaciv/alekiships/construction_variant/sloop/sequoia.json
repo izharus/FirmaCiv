@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:sequoia",
+  "loot_table": "firmaciv:entities/sloop_construction/sequoia",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.sequoia"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/sequoia"
+}

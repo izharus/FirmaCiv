@@ -1,0 +1,21 @@
+{
+  "parent": "neoforge:item/default",
+  "base": {
+    "parent": "alekiships:item/held/anchor",
+    "textures": {
+      "particle": "alekiships:item/held/anchor"
+    }
+  },
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "alekiships:item/icon/anchor"
+    },
+    "ground": {
+      "parent": "alekiships:item/icon/anchor"
+    },
+    "gui": {
+      "parent": "alekiships:item/icon/anchor"
+    }
+  }
+}

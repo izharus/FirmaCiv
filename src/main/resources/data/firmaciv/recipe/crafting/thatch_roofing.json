@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "T  ",
+    " T "
+  ],
+  "key": {
+    "T": {
+      "item": "tfc:thatch"
+    }
+  },
+  "result": {
+    "count": 4,
+    "id": "firmaciv:thatch_roofing"
+  }
+}

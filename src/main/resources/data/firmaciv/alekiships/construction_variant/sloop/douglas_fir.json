@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:douglas_fir",
+  "loot_table": "firmaciv:entities/sloop_construction/douglas_fir",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.douglas_fir"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/douglas_fir"
+}

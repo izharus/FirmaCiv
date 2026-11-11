@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:rosewood",
+  "loot_table": "firmaciv:entities/sloop_construction/rosewood",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.rosewood"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/rosewood"
+}

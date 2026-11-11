@@ -1,0 +1,14 @@
+{
+  "loot_table": "firmaciv:entities/rowboat/douglas_fir",
+  "material": "firmaciv:douglas_fir",
+  "repair_material": [
+    {
+      "repair_amount": 8.0,
+      "repair_ingredient": {
+        "item": "tfc:wood/planks/douglas_fir"
+      },
+      "repair_sound": "minecraft:block.wood.place"
+    }
+  ],
+  "texture": "firmaciv:entity/watercraft/rowboat/douglas_fir"
+}

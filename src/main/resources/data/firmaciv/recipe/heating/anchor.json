@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "alekiships:anchor"
+  },
+  "result_fluid": {
+    "amount": 400,
+    "id": "tfc:metal/steel"
+  },
+  "temperature": 1540
+}

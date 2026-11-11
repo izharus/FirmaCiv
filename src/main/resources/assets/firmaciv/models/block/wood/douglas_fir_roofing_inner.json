@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "alekiroofs:block/roofing_inner",
+  "parent": "firmaciv:block/roofing_inner",
   "textures": {
     "bottom": "tfc:block/wood/planks/douglas_fir",
     "top": "tfc:block/wood/planks/douglas_fir",

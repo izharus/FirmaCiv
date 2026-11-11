@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "firmaciv:canoe_paddle",
+    "firmaciv:kayak_paddle",
+    "alekiships:oar",
+    "firmaciv:kayak",
+    "firmaciv:nav_clock",
+    "firmaciv:sextant",
+    "firmaciv:barometer"
+  ]
+}

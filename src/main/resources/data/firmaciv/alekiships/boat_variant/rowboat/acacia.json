@@ -1,0 +1,14 @@
+{
+  "loot_table": "firmaciv:entities/rowboat/acacia",
+  "material": "firmaciv:acacia",
+  "repair_material": [
+    {
+      "repair_amount": 8.0,
+      "repair_ingredient": {
+        "item": "tfc:wood/planks/acacia"
+      },
+      "repair_sound": "minecraft:block.wood.place"
+    }
+  ],
+  "texture": "firmaciv:entity/watercraft/rowboat/acacia"
+}

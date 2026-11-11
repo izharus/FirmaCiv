@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:pine",
+  "loot_table": "firmaciv:entities/sloop_construction/pine",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.pine"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/pine"
+}

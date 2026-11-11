@@ -1,0 +1,14 @@
+{
+  "material": "firmaciv:kayak",
+  "texture": "firmaciv:entity/watercraft/kayak",
+  "loot_table": "minecraft:empty",
+  "repair_material": [
+    {
+      "repair_ingredient": {
+        "item": "firmaciv:large_waterproof_hide"
+      },
+      "repair_amount": 10.0,
+      "repair_sound": "minecraft:block.wool.place"
+    }
+  ]
+}

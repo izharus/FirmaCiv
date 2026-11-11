@@ -1,0 +1,109 @@
+{
+  "type": "alekiships:entity_multiblock_recipe",
+  "entity": {
+    "type": "alekiships:simple",
+    "entity": "firmaciv:rowboat/douglas_fir"
+  },
+  "key": {
+    "1": {
+      "states": [
+        {
+          "facing": "west",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        },
+        {
+          "facing": "north",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/douglas_fir"
+    },
+    "2": {
+      "states": [
+        {
+          "facing": "west",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        },
+        {
+          "facing": "south",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/douglas_fir"
+    },
+    "3": {
+      "state": {
+        "facing": "north",
+        "frame_processed": "7",
+        "shape": "straight"
+      },
+      "values": "firmaciv:wood/watercraft_frame/angled/douglas_fir"
+    },
+    "4": {
+      "state": {
+        "facing": "south",
+        "frame_processed": "7",
+        "shape": "straight"
+      },
+      "values": "firmaciv:wood/watercraft_frame/angled/douglas_fir"
+    },
+    "5": {
+      "states": [
+        {
+          "facing": "east",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        },
+        {
+          "facing": "north",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/douglas_fir"
+    },
+    "6": {
+      "states": [
+        {
+          "facing": "east",
+          "frame_processed": "7",
+          "shape": "inner_right"
+        },
+        {
+          "facing": "south",
+          "frame_processed": "7",
+          "shape": "inner_left"
+        }
+      ],
+      "values": "firmaciv:wood/watercraft_frame/angled/douglas_fir"
+    },
+    "L": {
+      "state": {
+        "facing": "north"
+      },
+      "values": "alekiships:oarlock"
+    },
+    "R": {
+      "state": {
+        "facing": "south"
+      },
+      "values": "alekiships:oarlock"
+    }
+  },
+  "pattern": [
+    [
+      "  ",
+      "LR",
+      "  "
+    ],
+    [
+      "12",
+      "34",
+      "56"
+    ]
+  ]
+}

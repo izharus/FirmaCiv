@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "firmaciv:copper_bolt"
+  },
+  "result_fluid": {
+    "amount": 25,
+    "id": "tfc:metal/copper"
+  },
+  "temperature": 1080
+}

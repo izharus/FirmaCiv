@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  #",
+    " # ",
+    "#  "
+  ],
+  "key": {
+    "#": {
+      "item": "tfc:wood/planks/willow"
+    }
+  },
+  "result": {
+    "count": 6,
+    "id": "firmaciv:wood/willow_roofing"
+  }
+}

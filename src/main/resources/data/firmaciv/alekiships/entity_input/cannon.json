@@ -1,0 +1,16 @@
+{
+  "inputs": [
+    {
+      "count": 1,
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "count": 1,
+      "item": "tfc:unrefined_paper"
+    },
+    {
+      "count": 1,
+      "item": "alekiships:cannonball"
+    }
+  ]
+}

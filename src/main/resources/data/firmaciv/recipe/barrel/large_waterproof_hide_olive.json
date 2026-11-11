@@ -1,0 +1,15 @@
+{
+  "type": "tfc:barrel_sealed",
+  "input_item": {
+    "item": "tfc:large_prepared_hide",
+    "count": 1
+  },
+  "input_fluid": {
+    "fluid": "tfc:olive_oil",
+    "amount": 200
+  },
+  "output_item": {
+    "id": "firmaciv:large_waterproof_hide"
+  },
+  "duration": 8000
+}

@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:white_cedar",
+  "loot_table": "firmaciv:entities/sloop_construction/white_cedar",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.white_cedar"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/white_cedar"
+}

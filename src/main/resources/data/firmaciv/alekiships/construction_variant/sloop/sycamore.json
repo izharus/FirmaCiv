@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:sycamore",
+  "loot_table": "firmaciv:entities/sloop_construction/sycamore",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.sycamore"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/sycamore"
+}

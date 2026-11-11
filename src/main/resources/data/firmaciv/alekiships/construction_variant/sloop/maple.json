@@ -1,0 +1,8 @@
+{
+  "construction_input": "firmaciv:maple",
+  "loot_table": "firmaciv:entities/sloop_construction/maple",
+  "name": {
+    "translate": "entity.firmaciv.sloop_construction.maple"
+  },
+  "texture": "firmaciv:entity/watercraft/sloop_construction/maple"
+}

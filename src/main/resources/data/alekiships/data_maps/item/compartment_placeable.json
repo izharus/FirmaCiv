@@ -1,0 +1,13 @@
+{
+  "values": {
+    "#firmaciv:chests": {
+      "type": "firmaciv:chest"
+    },
+    "#tfc:barrels": {
+      "type": "firmaciv:barrel"
+    },
+    "#tfc:fired_large_vessels": {
+      "type": "firmaciv:large_vessel"
+    }
+  }
+}

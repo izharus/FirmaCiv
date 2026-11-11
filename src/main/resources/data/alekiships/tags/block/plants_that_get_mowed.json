@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "#tfc:fresh_underwater_plants",
+    "#tfc:salty_underwater_plants",
+    "#tfc:fresh_emergent_plants",
+    "#tfc:salty_emergent_plants",
+    "#tfc:fresh_floating_plants",
+    "#tfc:salty_floating_plants",
+    "#tfc:shore_plants"
+  ]
+}

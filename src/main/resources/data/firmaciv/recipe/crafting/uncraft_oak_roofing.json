@@ -1,0 +1,25 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "item": "firmaciv:wood/oak_roofing"
+    },
+    {
+      "tag": "c:tools/saw"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:wood/lumber/oak"
+  },
+  "primary_ingredient": {
+    "tag": "c:tools/saw"
+  },
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  }
+}

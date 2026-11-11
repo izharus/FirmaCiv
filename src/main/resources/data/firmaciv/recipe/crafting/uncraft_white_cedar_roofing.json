@@ -1,0 +1,25 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "item": "firmaciv:wood/white_cedar_roofing"
+    },
+    {
+      "tag": "c:tools/saw"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "id": "tfc:wood/lumber/white_cedar"
+  },
+  "primary_ingredient": {
+    "tag": "c:tools/saw"
+  },
+  "remainder": {
+    "modifiers": [
+      {
+        "type": "tfc:damage_crafting_remainder"
+      }
+    ]
+  }
+}

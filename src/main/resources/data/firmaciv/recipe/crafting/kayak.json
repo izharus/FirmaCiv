@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "HSH",
+    "LLL"
+  ],
+  "key": {
+    "S": {
+      "tag": "c:strings"
+    },
+    "H": {
+      "item": "firmaciv:large_waterproof_hide"
+    },
+    "L": {
+      "tag": "tfc:lumber"
+    }
+  },
+  "result": {
+    "id": "firmaciv:kayak"
+  }
+}

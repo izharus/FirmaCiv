@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "firmaciv:cannon"
+  },
+  "result_fluid": {
+    "amount": 1300,
+    "id": "tfc:metal/cast_iron"
+  },
+  "temperature": 1535
+}

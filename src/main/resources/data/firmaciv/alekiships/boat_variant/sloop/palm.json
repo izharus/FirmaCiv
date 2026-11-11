@@ -1,0 +1,58 @@
+{
+  "loot_table": "firmaciv:entities/sloop/palm",
+  "material": "firmaciv:palm",
+  "repair_material": [
+    {
+      "damage_requirement": {
+        "max": 409.6
+      },
+      "repair_amount": 6.6206894,
+      "repair_ingredient": {
+        "item": "tfc:wood/planks/palm"
+      },
+      "repair_sound": "minecraft:block.wood.place"
+    },
+    {
+      "damage_requirement": {
+        "max": 307.2,
+        "min": 204.8
+      },
+      "repair_amount": 30.117647,
+      "repair_ingredient": {
+        "item": "minecraft:stripped_oak_log"
+      },
+      "repair_sound": "minecraft:block.wood.place"
+    },
+    {
+      "damage_requirement": {
+        "min": 307.2
+      },
+      "repair_amount": 48.0,
+      "repair_ingredient": {
+        "item": "minecraft:oak_fence"
+      },
+      "repair_sound": "minecraft:block.wood.place"
+    },
+    {
+      "damage_requirement": {
+        "max": 102.4
+      },
+      "repair_amount": 32.0,
+      "repair_ingredient": {
+        "item": "minecraft:white_wool"
+      },
+      "repair_sound": "minecraft:block.wool.place"
+    },
+    {
+      "damage_requirement": {
+        "min": 256.0
+      },
+      "repair_amount": 128.0,
+      "repair_ingredient": {
+        "item": "alekiships:anchor"
+      },
+      "repair_sound": "minecraft:block.metal.place"
+    }
+  ],
+  "texture": "firmaciv:entity/watercraft/sloop/palm"
+}
