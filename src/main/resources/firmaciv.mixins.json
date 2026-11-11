@@ -9,12 +9,15 @@
     "BoatWindMixin",
     "EntityInputMixin",
     "VehicleWaterMixin",
+    "BoatMovementMixin",
     "CompartmentPlacementMixin",
     "CleatLeashMixin",
     "LeashableMixin",
     "VehiclePartAttachmentMixin"
   ],
-  "client": [],
+  "client": [
+    "DeckMovementMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
