@@ -16,6 +16,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -120,7 +122,9 @@ public class TFCChestCompartmentEntity extends ContainerMenuCompartmentEntity im
     @Override
     public void startOpen(Player player) {
         if (level().isClientSide || player.isSpectator()) return;
-        viewers++;
+        if (viewers++ == 0) {
+            playSound(SoundEvents.CHEST_OPEN, SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.1F + 0.9F);
+        }
         level().broadcastEntityEvent(this, (byte) 1);
     }
 
@@ -129,6 +133,7 @@ public class TFCChestCompartmentEntity extends ContainerMenuCompartmentEntity im
         super.stopOpen(player);
         if (level().isClientSide || player.isSpectator() || viewers == 0) return;
         if (--viewers == 0) {
+            playSound(SoundEvents.CHEST_CLOSE, SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.1F + 0.9F);
             level().broadcastEntityEvent(this, (byte) 2);
         }
     }
