@@ -60,9 +60,9 @@ public final class FirmacivEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<FirmacivCannonEntity>> FIRMACIV_CANNON_ENTITY = register("cannon",
             EntityType.Builder.of(FirmacivCannonEntity::new, MobCategory.MISC).sized(0.8F, 0.8F).fireImmune());
 
-    public static final DeferredHolder<EntityType<?>, EntityType<TFCChestCompartmentEntity>> TFC_CHEST_COMPARTMENT_ENTITY = register("compartment_tfc_chest", EntityType.Builder.<TFCChestCompartmentEntity>of(TFCChestCompartmentEntity::new, MobCategory.MISC).sized(0.6F, 0.7F).fireImmune());
-    public static final DeferredHolder<EntityType<?>, EntityType<TFCBarrelCompartmentEntity>> TFC_BARREL_COMPARTMENT_ENTITY = register("compartment_tfc_barrel", EntityType.Builder.<TFCBarrelCompartmentEntity>of(TFCBarrelCompartmentEntity::new, MobCategory.MISC).sized(0.6F, 0.7F).fireImmune());
-    public static final DeferredHolder<EntityType<?>, EntityType<LargeVesselCompartmentEntity>> LARGE_VESSEL_COMPARTMENT_ENTITY = register("compartment_large_vessel", EntityType.Builder.<LargeVesselCompartmentEntity>of(LargeVesselCompartmentEntity::new, MobCategory.MISC).sized(0.6F, 0.7F).fireImmune());
+    public static final DeferredHolder<EntityType<?>, EntityType<TFCChestCompartmentEntity>> TFC_CHEST_COMPARTMENT_ENTITY = register("compartment_tfc_chest", EntityType.Builder.<TFCChestCompartmentEntity>of(TFCChestCompartmentEntity::new, MobCategory.MISC).sized(0.6F, 0.7F).ridingOffset(0.125F).fireImmune());
+    public static final DeferredHolder<EntityType<?>, EntityType<TFCBarrelCompartmentEntity>> TFC_BARREL_COMPARTMENT_ENTITY = register("compartment_tfc_barrel", EntityType.Builder.<TFCBarrelCompartmentEntity>of(TFCBarrelCompartmentEntity::new, MobCategory.MISC).sized(0.6F, 0.7F).ridingOffset(0.125F).fireImmune());
+    public static final DeferredHolder<EntityType<?>, EntityType<LargeVesselCompartmentEntity>> LARGE_VESSEL_COMPARTMENT_ENTITY = register("compartment_large_vessel", EntityType.Builder.<LargeVesselCompartmentEntity>of(LargeVesselCompartmentEntity::new, MobCategory.MISC).sized(0.6F, 0.7F).ridingOffset(0.125F).fireImmune());
 
     private static <E extends RowboatEntity> DeferredHolder<EntityType<?>, EntityType<E>> registerRowboat(final TFCWood tfcWood,
                                                                                            final EntityType.Builder<E> builder) {

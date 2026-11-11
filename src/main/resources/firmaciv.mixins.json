@@ -8,7 +8,9 @@
     "FluidHelpersMixin",
     "BoatWindMixin",
     "EntityInputMixin",
-    "VehicleWaterMixin"
+    "VehicleWaterMixin",
+    "CompartmentPlacementMixin",
+    "VehiclePartAttachmentMixin"
   ],
   "client": [],
   "injectors": {
